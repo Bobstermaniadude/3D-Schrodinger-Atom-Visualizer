@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>3D Schrödinger Atom Visualizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #060822, #02040d 55%, #000 100%);
+      color: #f5f7ff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: rgba(4, 8, 32, 0.96);
+      box-shadow: 0 0 0 1px rgba(120, 160, 255, 0.25),
+        0 22px 60px rgba(0, 0, 0, 0.9);
+      z-index: 10;
+      position: relative;
+    }
+
+    header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #c6d3ff;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: #8f9ac6;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .field-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #7782b0;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    input[type="text"] {
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(116, 140, 255, 0.5);
+      background: radial-gradient(circle at top left, #151c3f, #05081c);
+      color: #eaefff;
+      font-size: 13px;
+      min-width: 160px;
+      outline: none;
+      box-shadow: 0 0 0 1px rgba(19, 32, 88, 0.8);
+    }
+
+    input[type="text"]::placeholder {
+      color: #666fa0;
+    }
+
+    input[type="text"]:focus {
+      border-color: #9bb3ff;
+      box-shadow: 0 0 0 1px rgba(114, 144, 255, 0.8),
+        0 0 20px rgba(84, 134, 255, 0.5);
+    }
+
+    button {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(144, 209, 255, 0.85);
+      background: radial-gradient(circle at top, #3f87ff, #1b4ad1);
+      color: #f7fbff;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9),
+        0 0 24px rgba(120, 180, 255, 0.6);
+    }
+
+    button span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #fff, #8ffcff);
+      box-shadow: 0 0 18px rgba(144, 255, 255, 0.9);
+    }
+
+    button:hover {
+      filter: brightness(1.06);
+      transform: translateY(-0.5px);
+    }
+
+    button:active {
+      filter: brightness(0.96);
+      transform: translateY(1px);
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.9),
+        0 0 16px rgba(120, 180, 255, 0.5);
+    }
+
+    button.icon-btn {
+      padding: 7px 10px;
+      font-size: 14px;
+    }
+
+    button.settings-gear-btn {
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: #ffffff;
+      box-shadow: none;
+      text-transform: none;
+      letter-spacing: normal;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 12;
+    }
+
+    button.settings-gear-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    button.settings-gear-btn:hover {
+      transform: rotate(12deg);
+      filter: brightness(1.1);
+      box-shadow: none;
+    }
+
+    button.settings-gear-btn:active {
+      transform: rotate(0deg) scale(0.96);
+      box-shadow: none;
+    }
+
+    .info-line {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-size: 11px;
+      color: #92a0d0;
+      flex-wrap: wrap;
+    }
+
+    .info-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #606ca0;
+      font-size: 10px;
+    }
+
+    .info-value {
+      color: #c8d4ff;
+    }
+
+    .info-muted {
+      color: #6c78aa;
+    }
+
+    .tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(120, 190, 255, 0.6);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9dd2ff;
+      background: radial-gradient(circle at top, #182a60, #071129);
+    }
+
+    #app-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #report-button.report-fab {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      z-index: 25;
+    }
+
+    #renderer-container {
+      position: absolute;
+      inset: 0;
+    }
+
+    .panel {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top left, rgba(13, 21, 56, 0.96), rgba(3, 5, 18, 0.96));
+      border: 1px solid rgba(96, 124, 255, 0.55);
+      box-shadow: 0 0 26px rgba(0, 0, 0, 0.95);
+      max-width: min(420px, 70vw);
+      font-size: 11px;
+      color: #bac7ff;
+      backdrop-filter: blur(18px);
+    }
+
+    .panel-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 6px;
+      color: #8ea3ff;
+    }
+
+    .panel-row {
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .panel-row strong {
+      color: #d6e0ff;
+      white-space: nowrap;
+    }
+
+    .panel-row span {
+      text-align: right;
+    }
+
+    .divider {
+      margin: 8px 0;
+      border-top: 1px solid rgba(96, 124, 255, 0.2);
+    }
+
+    #focused-orbital-details {
+      display: none;
+      flex-direction: column;
+    }
+
+    .bohr-container {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(96, 124, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bohr-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #7682b4;
+      align-self: flex-start;
+    }
+
+    #bohr-canvas {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(15, 25, 60, 0.4), transparent);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      margin-top: 6px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    }
+
+    .swatch-s {
+      background: radial-gradient(circle at center, #f5f5ff, #70b6ff);
+    }
+
+    .swatch-p {
+      background: radial-gradient(circle at center, #ffe7f5, #ff6fb1);
+    }
+
+    .swatch-d {
+      background: radial-gradient(circle at center, #f4ffe1, #b5ff52);
+    }
+
+    .swatch-f {
+      background: radial-gradient(circle at center, #f1e5ff, #c77dff);
+    }
+
+    .swatch-nucleus {
+      background: radial-gradient(circle at center, #fff3cf, #ffb347);
+    }
+
+    .hotkey-hint {
+      margin-top: 4px;
+      font-size: 10px;
+      color: #7682b4;
+    }
+
+    .hotkey-hint span {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(112, 128, 200, 0.7);
+      background: radial-gradient(circle at top, #1b2143, #050712);
+      color: #bcc5ff;
+      font-size: 9px;
+    }
+
+    /* Modal / Settings */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: radial-gradient(circle at top left, rgba(13, 21, 56, 0.98), rgba(3, 5, 18, 0.98));
+      border: 1px solid rgba(96, 124, 255, 0.55);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+      color: #eaefff;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-header {
+      font-size: 16px;
+      font-weight: 600;
+      color: #c6d3ff;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(96, 124, 255, 0.2);
+      padding-bottom: 8px;
+    }
+
+    .settings-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #bac7ff;
+    }
+
+    .color-picker {
+      -webkit-appearance: none;
+      appearance: none;
+      border: 1px solid rgba(116, 140, 255, 0.5);
+      background: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .color-picker::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    .color-picker::-webkit-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    select,
+    .toggle-input {
+      background: #0d1538;
+      color: #eaefff;
+      border: 1px solid rgba(116, 140, 255, 0.5);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    
+    .modal-copy {
+      margin: -4px 0 2px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: #aebcff;
+    }
+
+    .modal-textarea {
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      border-radius: 12px;
+      border: 1px solid rgba(116, 140, 255, 0.55);
+      background: radial-gradient(circle at top left, #151c3f, #05081c);
+      color: #eaefff;
+      font-size: 12px;
+      line-height: 1.45;
+      padding: 10px 12px;
+      outline: none;
+      box-shadow: 0 0 0 1px rgba(19, 32, 88, 0.7);
+    }
+
+    .modal-textarea::placeholder {
+      color: #7a86b7;
+    }
+
+    .modal-textarea:focus {
+      border-color: #9bb3ff;
+      box-shadow: 0 0 0 1px rgba(114, 144, 255, 0.85), 0 0 20px rgba(84, 134, 255, 0.35);
+    }
+
+    .modal-status {
+      min-height: 14px;
+      margin-top: -4px;
+      font-size: 11px;
+      color: #8ea3ff;
+    }
+
+    @media (max-width: 720px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      button.settings-gear-btn {
+        left: 12px;
+        top: 12px;
+      }
+
+      #report-button.report-fab {
+        right: 12px;
+        bottom: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div style="display:flex;flex-direction:column;gap:3px;">
+      <div class="title">Schrödinger Atom Visualizer</div>
+      <div class="subtitle">
+        Type an element and explore its 3D orbital probability clouds.
+      </div>
+    </div>
+    <div class="controls">
+      <div class="field-group">
+        <div class="field-label">Element</div>
+        <div class="field-row">
+          <input id="element-input" type="text" placeholder="e.g. H, He, C, Fe" autocomplete="off" />
+          <button id="load-button" type="button">
+            <span class="dot"></span>
+            <span>Render</span>
+          </button>
+        </div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Camera</div>
+        <div class="info-line">
+          <span class="tag">Drag</span>
+          <span class="info-muted">Rotate ·</span>
+          <span class="tag">Scroll</span>
+          <span class="info-muted">Zoom ·</span>
+          <span class="tag">Right drag</span>
+          <span class="info-muted">Pan</span>
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  <div id="app-container">
+    <div id="renderer-container"></div>
+    <div id="status-overlay"
+      style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#aab7ff;text-shadow:0 0 16px rgba(0,0,0,0.9);">
+      <span id="status-text">Initializing renderer…</span>
+    </div>
+    <button id="settings-button" class="settings-gear-btn" type="button" title="Settings" aria-label="Settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="3.2"></circle>
+        <path
+          d="M19.1 12a7.8 7.8 0 0 0-.07-1l2-1.55-2-3.45-2.39.62a8 8 0 0 0-1.74-1l-.36-2.45h-4l-.36 2.45a8 8 0 0 0-1.74 1l-2.39-.62-2 3.45 2 1.55a7.8 7.8 0 0 0 0 2l-2 1.55 2 3.45 2.39-.62a8 8 0 0 0 1.74 1l.36 2.45h4l.36-2.45a8 8 0 0 0 1.74-1l2.39.62 2-3.45-2-1.55c.05-.33.08-.66.08-1z">
+        </path>
+      </svg>
+    </button>
+    <div class="panel" id="info-panel">
+      <div class="panel-title">Quantum Details</div>
+      <div class="panel-row">
+        <strong id="info-element">Element:</strong>
+        <span id="info-element-text">–</span>
+      </div>
+      <div class="panel-row">
+        <strong>Atomic number:</strong>
+        <span id="info-Z">–</span>
+      </div>
+      <div class="panel-row">
+        <strong>Electron configuration:</strong>
+        <span id="info-config">–</span>
+      </div>
+      <div class="panel-row">
+        <strong>Occupied orbitals:</strong>
+        <span id="info-orbitals">–</span>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-swatch swatch-nucleus"></div>
+          <span>Nucleus</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch swatch-s"></div>
+          <span>s orbital</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch swatch-p"></div>
+          <span>p orbital</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch swatch-d"></div>
+          <span>d orbital</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch swatch-f"></div>
+          <span>f orbital</span>
+        </div>
+      </div>
+
+      <div id="focused-orbital-details">
+        <div class="divider"></div>
+        <div class="panel-title">Selected Orbital</div>
+        <div class="panel-row">
+          <strong>Orbital:</strong>
+          <span id="focus-name">–</span>
+        </div>
+        <div class="panel-row">
+          <strong>Shape:</strong>
+          <span id="focus-shape">–</span>
+        </div>
+        <div class="panel-row">
+          <strong>Wavefunction:</strong>
+          <span id="focus-wavefunction" style="font-family: serif; font-style: italic; font-size: 13px;">–</span>
+        </div>
+        <div class="panel-row" style="margin-top: 6px;">
+          <strong>Quantum Numbers:</strong>
+        </div>
+        <div class="panel-row">
+          <span class="info-muted">Principal (n)</span>
+          <span id="focus-n">–</span>
+        </div>
+        <div class="panel-row">
+          <span class="info-muted">Azimuthal (l)</span>
+          <span id="focus-l">–</span>
+        </div>
+        <div class="panel-row">
+          <span class="info-muted">Magnetic (m<sub>l</sub>)</span>
+          <span id="focus-m">–</span>
+        </div>
+        <div class="panel-row">
+          <span class="info-muted">Spin (m<sub>s</sub>)</span>
+          <span id="focus-s">±½</span>
+        </div>
+        <div class="panel-row" style="margin-top: 6px;">
+          <strong>Nodes:</strong>
+        </div>
+        <div class="panel-row">
+          <span class="info-muted">Radial</span>
+          <span id="focus-radial">–</span>
+        </div>
+        <div class="panel-row">
+          <span class="info-muted">Angular</span>
+          <span id="focus-angular">–</span>
+        </div>
+      </div>
+
+      <div class="bohr-container">
+        <div class="bohr-title">2D Bohr Model</div>
+        <canvas id="bohr-canvas" width="280" height="280"></canvas>
+      </div>
+      <div class="hotkey-hint">
+        Camera reset: <span>Double-click background</span> · Focus orbital: <span>Click orbital</span>
+      </div>
+    </div>
+
+
+    <!-- Report Issues Modal -->
+    <div id="report-modal" class="modal-overlay">
+      <div class="modal-content" style="max-width: 460px;">
+        <div class="modal-header">Report Issues</div>
+        <p class="modal-copy">If there are any issues with the program itself or the chemistry, type below.</p>
+        <textarea id="report-text" class="modal-textarea"
+          placeholder="Describe what happened, what you expected, and any steps to reproduce."></textarea>
+        <div id="report-status" class="modal-status"></div>
+        <div class="modal-actions">
+          <button id="report-cancel-btn" type="button"
+            style="background: radial-gradient(#4b557a, #202640); border-color: #5d6790;">Cancel</button>
+          <button id="report-send-btn" type="button">Send</button>
+        </div>
+      </div>
+    </div>
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">Visual Settings</div>
+
+        <div class="settings-group">
+          <!-- Colors -->
+          <div class="setting-row">
+            <span>s-Orbital Color</span>
+            <input type="color" id="set-color-s" class="color-picker" value="#89c5ff" />
+          </div>
+          <div class="setting-row">
+            <span>p-Orbital Color</span>
+            <input type="color" id="set-color-p" class="color-picker" value="#ff7ab8" />
+          </div>
+          <div class="setting-row">
+            <span>d-Orbital Color</span>
+            <input type="color" id="set-color-d" class="color-picker" value="#c5ff63" />
+          </div>
+          <div class="setting-row">
+            <span>f-Orbital Color</span>
+            <input type="color" id="set-color-f" class="color-picker" value="#d6a2ff" />
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Graphics / Quality -->
+          <div class="setting-row">
+            <span>Graphics Quality</span>
+            <select id="set-quality">
+              <option value="high">High (Smooth)</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low (Fast)</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <span>Starfield Background</span>
+            <input type="checkbox" id="set-starfield" class="toggle-input" checked />
+          </div>
+
+          <div class="setting-row">
+            <span>Auto Rotate Atom</span>
+            <input type="checkbox" id="set-autorotate" class="toggle-input" checked />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="set-reset-btn" type="button"
+            style="background: radial-gradient(#4b557a, #202640); border-color: #5d6790;">Reset</button>
+          <button id="set-close-btn" type="button">Apply & Close</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="report-button" class="report-fab" type="button" title="Report issues">
+      <span class="dot"></span>
+      <span>Report Issues</span>
+    </button>
+  </div>
+
+  <!-- Three.js & controls via CDN (pinned to r149 for non-module usage) -->
+  <script src="https://unpkg.com/three@0.149.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.149.0/examples/js/controls/OrbitControls.js"></script>
+  <!-- Main logic (no modules/imports needed, works from file:// or http://) -->
+  <script src="./main.js"></script>
+</body>
+
+</html>
+
+
+
