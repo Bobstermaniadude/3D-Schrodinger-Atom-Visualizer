@@ -2,124 +2,124 @@
 // Full periodic table: Z = 1–118
 
 const ELEMENTS = [
-  { Z: 1, symbol: "H", name: "Hydrogen" },
-  { Z: 2, symbol: "He", name: "Helium" },
-  { Z: 3, symbol: "Li", name: "Lithium" },
-  { Z: 4, symbol: "Be", name: "Beryllium" },
-  { Z: 5, symbol: "B", name: "Boron" },
-  { Z: 6, symbol: "C", name: "Carbon" },
-  { Z: 7, symbol: "N", name: "Nitrogen" },
-  { Z: 8, symbol: "O", name: "Oxygen" },
-  { Z: 9, symbol: "F", name: "Fluorine" },
-  { Z: 10, symbol: "Ne", name: "Neon" },
-  { Z: 11, symbol: "Na", name: "Sodium" },
-  { Z: 12, symbol: "Mg", name: "Magnesium" },
-  { Z: 13, symbol: "Al", name: "Aluminium" },
-  { Z: 14, symbol: "Si", name: "Silicon" },
-  { Z: 15, symbol: "P", name: "Phosphorus" },
-  { Z: 16, symbol: "S", name: "Sulfur" },
-  { Z: 17, symbol: "Cl", name: "Chlorine" },
-  { Z: 18, symbol: "Ar", name: "Argon" },
-  { Z: 19, symbol: "K", name: "Potassium" },
-  { Z: 20, symbol: "Ca", name: "Calcium" },
-  { Z: 21, symbol: "Sc", name: "Scandium" },
-  { Z: 22, symbol: "Ti", name: "Titanium" },
-  { Z: 23, symbol: "V", name: "Vanadium" },
-  { Z: 24, symbol: "Cr", name: "Chromium" },
-  { Z: 25, symbol: "Mn", name: "Manganese" },
-  { Z: 26, symbol: "Fe", name: "Iron" },
-  { Z: 27, symbol: "Co", name: "Cobalt" },
-  { Z: 28, symbol: "Ni", name: "Nickel" },
-  { Z: 29, symbol: "Cu", name: "Copper" },
-  { Z: 30, symbol: "Zn", name: "Zinc" },
-  { Z: 31, symbol: "Ga", name: "Gallium" },
-  { Z: 32, symbol: "Ge", name: "Germanium" },
-  { Z: 33, symbol: "As", name: "Arsenic" },
-  { Z: 34, symbol: "Se", name: "Selenium" },
-  { Z: 35, symbol: "Br", name: "Bromine" },
-  { Z: 36, symbol: "Kr", name: "Krypton" },
-  { Z: 37, symbol: "Rb", name: "Rubidium" },
-  { Z: 38, symbol: "Sr", name: "Strontium" },
-  { Z: 39, symbol: "Y", name: "Yttrium" },
-  { Z: 40, symbol: "Zr", name: "Zirconium" },
-  { Z: 41, symbol: "Nb", name: "Niobium" },
-  { Z: 42, symbol: "Mo", name: "Molybdenum" },
-  { Z: 43, symbol: "Tc", name: "Technetium" },
-  { Z: 44, symbol: "Ru", name: "Ruthenium" },
-  { Z: 45, symbol: "Rh", name: "Rhodium" },
-  { Z: 46, symbol: "Pd", name: "Palladium" },
-  { Z: 47, symbol: "Ag", name: "Silver" },
-  { Z: 48, symbol: "Cd", name: "Cadmium" },
-  { Z: 49, symbol: "In", name: "Indium" },
-  { Z: 50, symbol: "Sn", name: "Tin" },
-  { Z: 51, symbol: "Sb", name: "Antimony" },
-  { Z: 52, symbol: "Te", name: "Tellurium" },
-  { Z: 53, symbol: "I", name: "Iodine" },
-  { Z: 54, symbol: "Xe", name: "Xenon" },
-  { Z: 55, symbol: "Cs", name: "Cesium" },
-  { Z: 56, symbol: "Ba", name: "Barium" },
-  { Z: 57, symbol: "La", name: "Lanthanum" },
-  { Z: 58, symbol: "Ce", name: "Cerium" },
-  { Z: 59, symbol: "Pr", name: "Praseodymium" },
-  { Z: 60, symbol: "Nd", name: "Neodymium" },
-  { Z: 61, symbol: "Pm", name: "Promethium" },
-  { Z: 62, symbol: "Sm", name: "Samarium" },
-  { Z: 63, symbol: "Eu", name: "Europium" },
-  { Z: 64, symbol: "Gd", name: "Gadolinium" },
-  { Z: 65, symbol: "Tb", name: "Terbium" },
-  { Z: 66, symbol: "Dy", name: "Dysprosium" },
-  { Z: 67, symbol: "Ho", name: "Holmium" },
-  { Z: 68, symbol: "Er", name: "Erbium" },
-  { Z: 69, symbol: "Tm", name: "Thulium" },
-  { Z: 70, symbol: "Yb", name: "Ytterbium" },
-  { Z: 71, symbol: "Lu", name: "Lutetium" },
-  { Z: 72, symbol: "Hf", name: "Hafnium" },
-  { Z: 73, symbol: "Ta", name: "Tantalum" },
-  { Z: 74, symbol: "W", name: "Tungsten" },
-  { Z: 75, symbol: "Re", name: "Rhenium" },
-  { Z: 76, symbol: "Os", name: "Osmium" },
-  { Z: 77, symbol: "Ir", name: "Iridium" },
-  { Z: 78, symbol: "Pt", name: "Platinum" },
-  { Z: 79, symbol: "Au", name: "Gold" },
-  { Z: 80, symbol: "Hg", name: "Mercury" },
-  { Z: 81, symbol: "Tl", name: "Thallium" },
-  { Z: 82, symbol: "Pb", name: "Lead" },
-  { Z: 83, symbol: "Bi", name: "Bismuth" },
-  { Z: 84, symbol: "Po", name: "Polonium" },
-  { Z: 85, symbol: "At", name: "Astatine" },
-  { Z: 86, symbol: "Rn", name: "Radon" },
-  { Z: 87, symbol: "Fr", name: "Francium" },
-  { Z: 88, symbol: "Ra", name: "Radium" },
-  { Z: 89, symbol: "Ac", name: "Actinium" },
-  { Z: 90, symbol: "Th", name: "Thorium" },
-  { Z: 91, symbol: "Pa", name: "Protactinium" },
-  { Z: 92, symbol: "U", name: "Uranium" },
-  { Z: 93, symbol: "Np", name: "Neptunium" },
-  { Z: 94, symbol: "Pu", name: "Plutonium" },
-  { Z: 95, symbol: "Am", name: "Americium" },
-  { Z: 96, symbol: "Cm", name: "Curium" },
-  { Z: 97, symbol: "Bk", name: "Berkelium" },
-  { Z: 98, symbol: "Cf", name: "Californium" },
-  { Z: 99, symbol: "Es", name: "Einsteinium" },
-  { Z: 100, symbol: "Fm", name: "Fermium" },
-  { Z: 101, symbol: "Md", name: "Mendelevium" },
-  { Z: 102, symbol: "No", name: "Nobelium" },
-  { Z: 103, symbol: "Lr", name: "Lawrencium" },
-  { Z: 104, symbol: "Rf", name: "Rutherfordium" },
-  { Z: 105, symbol: "Db", name: "Dubnium" },
-  { Z: 106, symbol: "Sg", name: "Seaborgium" },
-  { Z: 107, symbol: "Bh", name: "Bohrium" },
-  { Z: 108, symbol: "Hs", name: "Hassium" },
-  { Z: 109, symbol: "Mt", name: "Meitnerium" },
-  { Z: 110, symbol: "Ds", name: "Darmstadtium" },
-  { Z: 111, symbol: "Rg", name: "Roentgenium" },
-  { Z: 112, symbol: "Cn", name: "Copernicium" },
-  { Z: 113, symbol: "Nh", name: "Nihonium" },
-  { Z: 114, symbol: "Fl", name: "Flerovium" },
-  { Z: 115, symbol: "Mc", name: "Moscovium" },
-  { Z: 116, symbol: "Lv", name: "Livermorium" },
-  { Z: 117, symbol: "Ts", name: "Tennessine" },
-  { Z: 118, symbol: "Og", name: "Oganesson" }
+  { Z: 1, symbol: "H", name: "Hydrogen", electronConfiguration: "1s1" },
+  { Z: 2, symbol: "He", name: "Helium", electronConfiguration: "1s2" },
+  { Z: 3, symbol: "Li", name: "Lithium", electronConfiguration: "1s2 2s1" },
+  { Z: 4, symbol: "Be", name: "Beryllium", electronConfiguration: "1s2 2s2" },
+  { Z: 5, symbol: "B", name: "Boron", electronConfiguration: "1s2 2s2 2p1" },
+  { Z: 6, symbol: "C", name: "Carbon", electronConfiguration: "1s2 2s2 2p2" },
+  { Z: 7, symbol: "N", name: "Nitrogen", electronConfiguration: "1s2 2s2 2p3" },
+  { Z: 8, symbol: "O", name: "Oxygen", electronConfiguration: "1s2 2s2 2p4" },
+  { Z: 9, symbol: "F", name: "Fluorine", electronConfiguration: "1s2 2s2 2p5" },
+  { Z: 10, symbol: "Ne", name: "Neon", electronConfiguration: "1s2 2s2 2p6" },
+  { Z: 11, symbol: "Na", name: "Sodium", electronConfiguration: "1s2 2s2 2p6 3s1" },
+  { Z: 12, symbol: "Mg", name: "Magnesium", electronConfiguration: "1s2 2s2 2p6 3s2" },
+  { Z: 13, symbol: "Al", name: "Aluminium", electronConfiguration: "1s2 2s2 2p6 3s2 3p1" },
+  { Z: 14, symbol: "Si", name: "Silicon", electronConfiguration: "1s2 2s2 2p6 3s2 3p2" },
+  { Z: 15, symbol: "P", name: "Phosphorus", electronConfiguration: "1s2 2s2 2p6 3s2 3p3" },
+  { Z: 16, symbol: "S", name: "Sulfur", electronConfiguration: "1s2 2s2 2p6 3s2 3p4" },
+  { Z: 17, symbol: "Cl", name: "Chlorine", electronConfiguration: "1s2 2s2 2p6 3s2 3p5" },
+  { Z: 18, symbol: "Ar", name: "Argon", electronConfiguration: "1s2 2s2 2p6 3s2 3p6" },
+  { Z: 19, symbol: "K", name: "Potassium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s1" },
+  { Z: 20, symbol: "Ca", name: "Calcium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2" },
+  { Z: 21, symbol: "Sc", name: "Scandium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d1" },
+  { Z: 22, symbol: "Ti", name: "Titanium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d2" },
+  { Z: 23, symbol: "V", name: "Vanadium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d3" },
+  { Z: 24, symbol: "Cr", name: "Chromium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s1 3d5" },
+  { Z: 25, symbol: "Mn", name: "Manganese", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d5" },
+  { Z: 26, symbol: "Fe", name: "Iron", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d6" },
+  { Z: 27, symbol: "Co", name: "Cobalt", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d7" },
+  { Z: 28, symbol: "Ni", name: "Nickel", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d8" },
+  { Z: 29, symbol: "Cu", name: "Copper", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s1 3d10" },
+  { Z: 30, symbol: "Zn", name: "Zinc", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10" },
+  { Z: 31, symbol: "Ga", name: "Gallium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p1" },
+  { Z: 32, symbol: "Ge", name: "Germanium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p2" },
+  { Z: 33, symbol: "As", name: "Arsenic", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p3" },
+  { Z: 34, symbol: "Se", name: "Selenium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p4" },
+  { Z: 35, symbol: "Br", name: "Bromine", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p5" },
+  { Z: 36, symbol: "Kr", name: "Krypton", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6" },
+  { Z: 37, symbol: "Rb", name: "Rubidium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1" },
+  { Z: 38, symbol: "Sr", name: "Strontium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2" },
+  { Z: 39, symbol: "Y", name: "Yttrium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d1" },
+  { Z: 40, symbol: "Zr", name: "Zirconium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d2" },
+  { Z: 41, symbol: "Nb", name: "Niobium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d4" },
+  { Z: 42, symbol: "Mo", name: "Molybdenum", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d5" },
+  { Z: 43, symbol: "Tc", name: "Technetium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d5" },
+  { Z: 44, symbol: "Ru", name: "Ruthenium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d7" },
+  { Z: 45, symbol: "Rh", name: "Rhodium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d8" },
+  { Z: 46, symbol: "Pd", name: "Palladium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 4d10" },
+  { Z: 47, symbol: "Ag", name: "Silver", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d10" },
+  { Z: 48, symbol: "Cd", name: "Cadmium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10" },
+  { Z: 49, symbol: "In", name: "Indium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p1" },
+  { Z: 50, symbol: "Sn", name: "Tin", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p2" },
+  { Z: 51, symbol: "Sb", name: "Antimony", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p3" },
+  { Z: 52, symbol: "Te", name: "Tellurium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p4" },
+  { Z: 53, symbol: "I", name: "Iodine", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p5" },
+  { Z: 54, symbol: "Xe", name: "Xenon", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6" },
+  { Z: 55, symbol: "Cs", name: "Cesium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1" },
+  { Z: 56, symbol: "Ba", name: "Barium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2" },
+  { Z: 57, symbol: "La", name: "Lanthanum", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 5d1" },
+  { Z: 58, symbol: "Ce", name: "Cerium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 5d1 4f1" },
+  { Z: 59, symbol: "Pr", name: "Praseodymium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f3" },
+  { Z: 60, symbol: "Nd", name: "Neodymium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f4" },
+  { Z: 61, symbol: "Pm", name: "Promethium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f5" },
+  { Z: 62, symbol: "Sm", name: "Samarium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f6" },
+  { Z: 63, symbol: "Eu", name: "Europium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f7" },
+  { Z: 64, symbol: "Gd", name: "Gadolinium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f7 5d1" },
+  { Z: 65, symbol: "Tb", name: "Terbium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f9" },
+  { Z: 66, symbol: "Dy", name: "Dysprosium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f10" },
+  { Z: 67, symbol: "Ho", name: "Holmium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f11" },
+  { Z: 68, symbol: "Er", name: "Erbium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f12" },
+  { Z: 69, symbol: "Tm", name: "Thulium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f13" },
+  { Z: 70, symbol: "Yb", name: "Ytterbium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14" },
+  { Z: 71, symbol: "Lu", name: "Lutetium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d1" },
+  { Z: 72, symbol: "Hf", name: "Hafnium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d2" },
+  { Z: 73, symbol: "Ta", name: "Tantalum", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d3" },
+  { Z: 74, symbol: "W", name: "Tungsten", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d4" },
+  { Z: 75, symbol: "Re", name: "Rhenium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d5" },
+  { Z: 76, symbol: "Os", name: "Osmium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d6" },
+  { Z: 77, symbol: "Ir", name: "Iridium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d7" },
+  { Z: 78, symbol: "Pt", name: "Platinum", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1 4f14 5d9" },
+  { Z: 79, symbol: "Au", name: "Gold", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1 4f14 5d10" },
+  { Z: 80, symbol: "Hg", name: "Mercury", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10" },
+  { Z: 81, symbol: "Tl", name: "Thallium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p1" },
+  { Z: 82, symbol: "Pb", name: "Lead", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p2" },
+  { Z: 83, symbol: "Bi", name: "Bismuth", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p3" },
+  { Z: 84, symbol: "Po", name: "Polonium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p4" },
+  { Z: 85, symbol: "At", name: "Astatine", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p5" },
+  { Z: 86, symbol: "Rn", name: "Radon", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6" },
+  { Z: 87, symbol: "Fr", name: "Francium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s1" },
+  { Z: 88, symbol: "Ra", name: "Radium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2" },
+  { Z: 89, symbol: "Ac", name: "Actinium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 6d1" },
+  { Z: 90, symbol: "Th", name: "Thorium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 6d2" },
+  { Z: 91, symbol: "Pa", name: "Protactinium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f2 6d1" },
+  { Z: 92, symbol: "U", name: "Uranium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f3 6d1" },
+  { Z: 93, symbol: "Np", name: "Neptunium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f4 6d1" },
+  { Z: 94, symbol: "Pu", name: "Plutonium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f6" },
+  { Z: 95, symbol: "Am", name: "Americium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f7" },
+  { Z: 96, symbol: "Cm", name: "Curium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f7 6d1" },
+  { Z: 97, symbol: "Bk", name: "Berkelium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f9" },
+  { Z: 98, symbol: "Cf", name: "Californium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f10" },
+  { Z: 99, symbol: "Es", name: "Einsteinium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f11" },
+  { Z: 100, symbol: "Fm", name: "Fermium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f12" },
+  { Z: 101, symbol: "Md", name: "Mendelevium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f13" },
+  { Z: 102, symbol: "No", name: "Nobelium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14" },
+  { Z: 103, symbol: "Lr", name: "Lawrencium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 7p1" },
+  { Z: 104, symbol: "Rf", name: "Rutherfordium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d2" },
+  { Z: 105, symbol: "Db", name: "Dubnium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d3" },
+  { Z: 106, symbol: "Sg", name: "Seaborgium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d4" },
+  { Z: 107, symbol: "Bh", name: "Bohrium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d5" },
+  { Z: 108, symbol: "Hs", name: "Hassium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d6" },
+  { Z: 109, symbol: "Mt", name: "Meitnerium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d7" },
+  { Z: 110, symbol: "Ds", name: "Darmstadtium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d8" },
+  { Z: 111, symbol: "Rg", name: "Roentgenium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d9" },
+  { Z: 112, symbol: "Cn", name: "Copernicium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10" },
+  { Z: 113, symbol: "Nh", name: "Nihonium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p1" },
+  { Z: 114, symbol: "Fl", name: "Flerovium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p2" },
+  { Z: 115, symbol: "Mc", name: "Moscovium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p3" },
+  { Z: 116, symbol: "Lv", name: "Livermorium", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p4" },
+  { Z: 117, symbol: "Ts", name: "Tennessine", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p5" },
+  { Z: 118, symbol: "Og", name: "Oganesson", electronConfiguration: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p6" }
 ];
 
 function findElement(query) {
@@ -166,6 +166,35 @@ const SUBSHELL_ORDER = [
 ];
 
 function buildElectronConfiguration(Z) {
+  // Look up the element's real electron configuration string
+  const element = ELEMENTS.find((e) => e.Z === Z);
+  const configStr = element && element.electronConfiguration;
+
+  if (configStr) {
+    // Parse the stored configuration string (e.g. "1s2 2s2 2p6 3s2 3p6 4s1 3d5")
+    const filled = [];
+    const typeCapacity = { s: 2, p: 6, d: 10, f: 14 };
+    const lMap = { s: 0, p: 1, d: 2, f: 3 };
+    const parts = configStr.trim().split(/\s+/);
+    for (const part of parts) {
+      const match = part.match(/^(\d+)([spdf])(\d+)$/);
+      if (!match) continue;
+      const n = parseInt(match[1], 10);
+      const type = match[2];
+      const electrons = parseInt(match[3], 10);
+      filled.push({
+        label: `${n}${type}`,
+        n,
+        l: lMap[type],
+        type,
+        capacity: typeCapacity[type],
+        electrons
+      });
+    }
+    return filled;
+  }
+
+  // Fallback: naive Aufbau filling for unknown elements
   let remaining = Z;
   const filled = [];
   for (const sub of SUBSHELL_ORDER) {
@@ -196,13 +225,25 @@ function summarizeOrbitals(filled) {
 let renderer;
 let scene;
 let camera;
+let composer = null;
+let bloomPass = null;
+let usePostFX = false;
 let animationId;
 let rootGroup;
 let orbitState;
+let sceneLights = {};
+let maxZoomRadius = 200;
+let rotateInertia = new THREE.Quaternion();
+let isRotateDragActive = false;
 let electronAnims = []; // tracked electron animations
+let shootingStars = []; // tracked shooting stars
 let orbitalRegistry = []; // { label, shape, shellRadius, electrons[], originalOpacities[] }
 let hoveredOrbitalIndex = -1;
 let focusedOrbitalIndex = -1; // -1 = none focused
+let explorerFitRadius = 200; // camera radius that frames the current quantum cloud
+const NORMAL_MAX_ZOOM_RADIUS = 200;
+let lastNormalRadius = 14;
+let lastQuantumRadius = null;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -234,15 +275,17 @@ function initScene() {
   rendererContainer.appendChild(renderer.domElement);
 
   scene = new THREE.Scene();
+  scene.add(explorerGroup);
+  explorerGroup.visible = false;
 
-  camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+  camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 200000);
 
   const target = new THREE.Vector3(0, 0, 0);
   orbitState = {
     target,
     radius: 14,
     theta: Math.PI / 4,
-    phi: Math.PI / 3
+    phi: Math.PI / 2
   };
 
   function updateCameraFromOrbit() {
@@ -278,6 +321,14 @@ function initScene() {
   rimLight.target.position.set(0, 0, 0);
   scene.add(rimLight);
   scene.add(rimLight.target);
+  sceneLights = {
+    ambient,
+    hemi: hemiLight,
+    key: keyLight,
+    fill: fillLight,
+    rim: rimLight
+  };
+  applyGraphicsQualitySettings();
 
   // Starfield
   const starGeo = new THREE.BufferGeometry();
@@ -305,6 +356,8 @@ function initScene() {
   starfieldPoints.visible = AppSettings.starfield;
   scene.add(starfieldPoints);
 
+  initShootingStars();
+
   rootGroup = new THREE.Group();
   scene.add(rootGroup);
 
@@ -314,35 +367,105 @@ function initScene() {
   let isDragging = false;
   let lastX = 0;
   let lastY = 0;
+  let activePointerId = null;
+  let dragAction = null; // "rotate" | "pan"
 
   const canvas = renderer.domElement;
+  canvas.style.touchAction = "none";
 
   let mouseDownPos = { x: 0, y: 0 };
 
-  canvas.addEventListener("mousedown", (e) => {
-    if (e.button !== 0) return;
+  canvas.addEventListener("pointerdown", (e) => {
+    const isLeft = e.button === 0;
+    const isRight = e.button === 2;
+    if (!isLeft && !isRight) {
+      return;
+    }
+    if (isRight) {
+      e.preventDefault();
+    }
+
+    dragAction = isRight ? "pan" : "rotate";
+    isRotateDragActive = dragAction === "rotate";
+    if (isRotateDragActive) {
+      rotateInertia.identity();
+    }
+    activePointerId = e.pointerId;
     isDragging = true;
     lastX = e.clientX;
     lastY = e.clientY;
-    mouseDownPos.x = e.clientX;
-    mouseDownPos.y = e.clientY;
+    canvas.setPointerCapture(e.pointerId);
+
+    if (isLeft) {
+      mouseDownPos.x = e.clientX;
+      mouseDownPos.y = e.clientY;
+    }
   });
 
-  window.addEventListener("mousemove", (e) => {
-    if (isDragging && orbitState) {
+  canvas.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
+
+  canvas.addEventListener("pointermove", (e) => {
+    if (isDragging && orbitState && e.pointerId === activePointerId) {
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
       lastX = e.clientX;
       lastY = e.clientY;
-      const rotSpeed = 0.005;
-      orbitState.theta -= dx * rotSpeed;
-      orbitState.phi -= dy * rotSpeed;
-      const eps = 0.001;
-      orbitState.phi = Math.max(eps, Math.min(Math.PI - eps, orbitState.phi));
-      updateCameraFromOrbit();
-    }
-    // Hover highlight (only when not dragging)
-    if (!isDragging) {
+
+      if (dragAction === "rotate") {
+        if (rootGroup) {
+          const rotSpeed = AppSettings.rotationSensitivity || 0.003;
+
+          // Ensure camera matrices are current before extracting axes
+          camera.updateMatrixWorld();
+
+          // Screen-space right axis for vertical drag (Pitching)
+          const camRight = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0).normalize();
+
+          // Turntable logic:
+          // Horizontal drag rotates around Global Y (0,1,0), acting as Yaw
+          // Vertical drag rotates around Camera Right, acting as Pitch
+          const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), dx * rotSpeed);
+          const qX = new THREE.Quaternion().setFromAxisAngle(camRight, dy * rotSpeed);
+
+          // Apply pitch locally (qX later) and yaw globally (qY first)
+          const deltaRotation = new THREE.Quaternion().multiplyQuaternions(qY, qX);
+
+          // By only rotating around World Y and Camera Right, we inherently avoid Z-roll buildup
+          rootGroup.quaternion.premultiply(deltaRotation);
+          
+          if (explorerGroup) {
+            explorerGroup.quaternion.premultiply(deltaRotation);
+            explorerGroup.quaternion.normalize();
+          }
+
+          // Normalize to prevent floating point drift
+          rootGroup.quaternion.normalize();
+
+          if (AppSettings.inertiaSpin) {
+            rotateInertia.slerp(deltaRotation, 0.42);
+          }
+        }
+      } else if (dragAction === "pan") {
+        if (rootGroup) {
+          const panScale = orbitState.radius * 0.0018;
+          const forward = new THREE.Vector3();
+          camera.getWorldDirection(forward);
+          const right = new THREE.Vector3().crossVectors(forward, camera.up).normalize();
+          const up = new THREE.Vector3().copy(camera.up).normalize();
+
+          rootGroup.position.addScaledVector(right, dx * panScale);
+          rootGroup.position.addScaledVector(up, -dy * panScale);
+
+          if (explorerGroup) {
+            explorerGroup.position.addScaledVector(right, dx * panScale);
+            explorerGroup.position.addScaledVector(up, -dy * panScale);
+          }
+        }
+      }
+    } else if (!isDragging) {
+      // Hover highlight (only when not dragging)
       const rect = canvas.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -350,11 +473,28 @@ function initScene() {
     }
   });
 
-  window.addEventListener("mouseup", () => {
+  function endPointerDrag(e) {
+    if (activePointerId !== null && e.pointerId !== activePointerId) {
+      return;
+    }
     isDragging = false;
+    dragAction = null;
+    activePointerId = null;
+    isRotateDragActive = false;
+  }
+
+  canvas.addEventListener("pointerup", endPointerDrag);
+  canvas.addEventListener("pointercancel", endPointerDrag);
+  canvas.addEventListener("lostpointercapture", endPointerDrag);
+  canvas.addEventListener("mouseleave", () => {
+    isDragging = false;
+    dragAction = null;
+    activePointerId = null;
+    isRotateDragActive = false;
   });
 
   canvas.addEventListener("click", (e) => {
+    if (e.button !== 0) return;
     // Only handle click if mouse didn't drag
     const dx = e.clientX - mouseDownPos.x;
     const dy = e.clientY - mouseDownPos.y;
@@ -371,9 +511,11 @@ function initScene() {
     (e) => {
       if (!orbitState) return;
       e.preventDefault();
-      const zoomFactor = 1 + e.deltaY * 0.001;
+      // Use an exponential zoom so the factor is always positive and monotonic.
+      // Prevents edge cases where a large wheel delta can flip direction.
+      const zoomFactor = Math.exp(e.deltaY * 0.001);
       orbitState.radius *= zoomFactor;
-      orbitState.radius = Math.max(3, Math.min(60, orbitState.radius));
+      orbitState.radius = Math.max(3, Math.min(maxZoomRadius, orbitState.radius));
       updateCameraFromOrbit();
     },
     { passive: false }
@@ -383,12 +525,74 @@ function initScene() {
     if (!orbitState) return;
     orbitState.radius = 14;
     orbitState.theta = Math.PI / 4;
-    orbitState.phi = Math.PI / 3;
+    orbitState.phi = Math.PI / 2;
+    if (rootGroup) {
+      rootGroup.position.set(0, 0, 0);
+      rootGroup.quaternion.identity();
+    }
+    if (explorerGroup) {
+      explorerGroup.position.set(0, 0, 0);
+      explorerGroup.quaternion.identity();
+    }
+    rotateInertia.identity();
     updateCameraFromOrbit();
   });
 
   animate();
   return true;
+}
+
+function initShootingStars() {
+  if (!scene) return;
+
+  const existingGroup = scene.getObjectByName("shootingStarsGroup");
+  if (existingGroup) {
+    scene.remove(existingGroup);
+    // dispose geometries
+    for (const child of existingGroup.children) {
+      if (child.geometry) child.geometry.dispose();
+      if (child.material) child.material.dispose();
+    }
+  }
+
+  shootingStars = [];
+  const ssGroup = new THREE.Group();
+  ssGroup.name = "shootingStarsGroup";
+  scene.add(ssGroup);
+
+  // We only show shooting stars on high/ultra
+  const numShootingStars = (AppSettings.quality === "ultra") ? 2 : (AppSettings.quality === "high" ? 1 : 0);
+
+  for (let i = 0; i < numShootingStars; i++) {
+    const geo = new THREE.BufferGeometry();
+    const trailLength = 8;
+    const posLine = new Float32Array(trailLength * 3);
+    geo.setAttribute("position", new THREE.BufferAttribute(posLine, 3));
+
+    const mat = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+
+    const line = new THREE.Line(geo, mat);
+    ssGroup.add(line);
+
+    shootingStars.push({
+      mesh: line,
+      positions: posLine,
+      trailLength: trailLength,
+      active: false,
+      timer: Math.random() * 2, // spawn sooner initially
+      headV: new THREE.Vector3(),
+      dirV: new THREE.Vector3(),
+      speed: 0,
+      distanceTraveled: 0,
+      fadingOut: false
+    });
+  }
 }
 
 function onWindowResize() {
@@ -397,7 +601,7 @@ function onWindowResize() {
   const height = rendererContainer.clientHeight || window.innerHeight;
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
-  renderer.setSize(width, height);
+  applyGraphicsQualitySettings();
 }
 
 // --- Animation loop ---
@@ -408,9 +612,21 @@ function animate() {
   animationId = requestAnimationFrame(animate);
   const elapsed = clock.getElapsedTime();
 
-  // Auto-rotation based on settings
-  if (rootGroup && AppSettings.autorotate) {
-    rootGroup.rotation.y += 0.0008;
+  if (rootGroup) {
+    if (AppSettings.autorotate && !isRotateDragActive) {
+      const autoRot = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.0008);
+      rootGroup.quaternion.premultiply(autoRot);
+      if (explorerGroup) explorerGroup.quaternion.premultiply(autoRot);
+    }
+
+    if (AppSettings.inertiaSpin && !isRotateDragActive) {
+      rootGroup.quaternion.premultiply(rotateInertia);
+      if (explorerGroup) explorerGroup.quaternion.premultiply(rotateInertia);
+      rotateInertia.slerp(new THREE.Quaternion(), 0.06);
+    }
+    if (!AppSettings.inertiaSpin && !isRotateDragActive) {
+      rotateInertia.identity();
+    }
   }
 
   // Animate electrons along their orbital paths
@@ -418,8 +634,85 @@ function animate() {
     anim.update(elapsed);
   }
 
+  // Animate shooting stars
+  if (AppSettings.starfield && (AppSettings.quality === "high" || AppSettings.quality === "ultra")) {
+    const delta = clock.getDelta() || 0.016; // rough fallback if delta is weird
+    for (const ss of shootingStars) {
+      if (!ss.active) {
+        ss.timer -= delta;
+        if (ss.timer <= 0) {
+          ss.active = true;
+          ss.timer = Math.random() * 4 + 2;
+          ss.distanceTraveled = 0;
+          ss.fadingOut = false;
+
+          // spawn roughly above or to the side, between r=50 and r=90
+          const r = 50 + Math.random() * 40;
+          const theta = Math.random() * Math.PI * 2;
+          const phi = Math.acos(2 * Math.random() - 1);
+          ss.headV.set(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
+
+          // random direction
+          ss.dirV.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
+          ss.speed = Math.random() * 50 + 40; // fast!
+
+          for (let i = 0; i < ss.trailLength; i++) {
+            ss.positions[i * 3] = ss.headV.x;
+            ss.positions[i * 3 + 1] = ss.headV.y;
+            ss.positions[i * 3 + 2] = ss.headV.z;
+          }
+          ss.mesh.geometry.attributes.position.needsUpdate = true;
+          ss.mesh.material.opacity = 0;
+        }
+      } else {
+        // calculate current step
+        const stepDist = ss.speed * delta;
+        const step = ss.dirV.clone().multiplyScalar(stepDist);
+        ss.headV.add(step);
+        ss.distanceTraveled += stepDist;
+
+        // Draw a perfectly smooth straight line behind the head
+        // Use a bell curve (sine wave from 0 to PI) based on distance traveled vs max distance (~110)
+        // This makes the star grow smoothly to a peak length, then shrink to nothing.
+        const lifetimeFraction = Math.max(0, Math.min(1, ss.distanceTraveled / 110));
+        const bellCurve = Math.sin(lifetimeFraction * Math.PI);
+
+        const currentTrailLen = bellCurve * (ss.speed * 0.18); // stretches and shrinks naturally
+
+        for (let i = 0; i < ss.trailLength; i++) {
+          const fraction = i / (ss.trailLength - 1);
+          const lagDist = fraction * currentTrailLen;
+
+          ss.positions[i * 3 + 0] = ss.headV.x - ss.dirV.x * lagDist;
+          ss.positions[i * 3 + 1] = ss.headV.y - ss.dirV.y * lagDist;
+          ss.positions[i * 3 + 2] = ss.headV.z - ss.dirV.z * lagDist;
+        }
+        ss.mesh.geometry.attributes.position.needsUpdate = true;
+
+        // Force rendering behind everything
+        ss.mesh.renderOrder = -5;
+
+        // Apply same bell curve to opacity for smooth fade in/out
+        ss.mesh.material.opacity = bellCurve * 1.0;
+
+        if (ss.distanceTraveled > 110 || ss.mesh.material.opacity <= 0.01 && lifetimeFraction > 0.5) {
+          ss.fadingOut = true;
+          ss.mesh.material.opacity -= delta * 2;
+          if (ss.mesh.material.opacity <= 0) {
+            ss.active = false;
+            ss.mesh.material.opacity = 0;
+          }
+        }
+      }
+    }
+  }
+
   if (renderer && scene && camera) {
-    renderer.render(scene, camera);
+    if (usePostFX && composer) {
+      composer.render();
+    } else {
+      renderer.render(scene, camera);
+    }
   }
 
   // Update focus label position after rendering so all matrices (camera & objects) are perfectly in sync with the current frame
@@ -430,14 +723,17 @@ function animate() {
 
 const DEFAULT_SETTINGS = {
   colors: {
-    s: "#89c5ff",
-    p: "#ff7ab8",
-    d: "#c5ff63",
-    f: "#d6a2ff"
+    s: "#2f6bff",
+    p: "#ff3b30",
+    d: "#ffd400",
+    f: "#20c96b"
   },
-  quality: "high", // high, medium, low
+  quality: "high", // ultra, high, medium, low, verylow
   starfield: true,
-  autorotate: true
+  particleView: false,
+  autorotate: true,
+  inertiaSpin: false,
+  rotationSensitivity: 0.003
 };
 
 let AppSettings = { ...DEFAULT_SETTINGS };
@@ -447,6 +743,119 @@ try {
     AppSettings = { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
   }
 } catch (e) { console.error("Could not load settings"); }
+const VALID_QUALITIES = new Set(["ultra", "high", "medium", "low", "verylow"]);
+if (!VALID_QUALITIES.has(AppSettings.quality)) {
+  AppSettings.quality = "high";
+}
+
+function applySavedColorMigration() {
+  const legacy = {
+    s: "#89c5ff",
+    p: "#ff7ab8",
+    d: "#c5ff63",
+    f: "#d6a2ff"
+  };
+
+  const normalize = (value) => String(value || "").trim().toLowerCase();
+  let changed = false;
+
+  if (!AppSettings.colors || typeof AppSettings.colors !== "object") {
+    AppSettings.colors = { ...DEFAULT_SETTINGS.colors };
+    return true;
+  }
+
+  for (const key of ["s", "p", "d", "f"]) {
+    if (!AppSettings.colors[key]) {
+      AppSettings.colors[key] = DEFAULT_SETTINGS.colors[key];
+      changed = true;
+      continue;
+    }
+    if (normalize(AppSettings.colors[key]) === normalize(legacy[key])) {
+      AppSettings.colors[key] = DEFAULT_SETTINGS.colors[key];
+      changed = true;
+    }
+  }
+  return changed;
+}
+if (applySavedColorMigration()) {
+  try {
+    localStorage.setItem("atom_visualizer_settings", JSON.stringify(AppSettings));
+  } catch (_) {
+    // Ignore persistence failure; runtime colors are still migrated.
+  }
+}
+
+function configurePostProcessing() {
+  const canUseComposer =
+    typeof THREE.EffectComposer === "function" &&
+    typeof THREE.RenderPass === "function" &&
+    typeof THREE.UnrealBloomPass === "function";
+  const shouldUse = AppSettings.quality === "ultra" && canUseComposer;
+
+  if (!shouldUse) {
+    composer = null;
+    bloomPass = null;
+    usePostFX = false;
+    return;
+  }
+
+  if (!composer) {
+    composer = new THREE.EffectComposer(renderer);
+    const renderPass = new THREE.RenderPass(scene, camera);
+    bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(1, 1), 1.1, 0.7, 0.82);
+    composer.addPass(renderPass);
+    composer.addPass(bloomPass);
+  }
+
+  const width = rendererContainer.clientWidth || window.innerWidth;
+  const height = rendererContainer.clientHeight || window.innerHeight;
+  composer.setSize(width, height);
+  if (typeof composer.setPixelRatio === "function") {
+    composer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  }
+  if (bloomPass) {
+    bloomPass.strength = 1.08;
+    bloomPass.radius = 0.72;
+    bloomPass.threshold = 0.8;
+  }
+  usePostFX = true;
+}
+
+function applyGraphicsQualitySettings() {
+  if (!renderer) return;
+
+  const profiles = {
+    ultra: { ambient: 0.78, hemi: 0.88, key: 1.9, fill: 1.05, rim: 2.6, exposure: 1.2, shadows: true, pixelCap: 2 },
+    high: { ambient: 0.6, hemi: 0.6, key: 1.2, fill: 0.6, rim: 1.8, exposure: 1.05, shadows: true, pixelCap: 2 },
+    medium: { ambient: 0.5, hemi: 0.45, key: 1.0, fill: 0.45, rim: 1.25, exposure: 1.0, shadows: false, pixelCap: 1.75 },
+    low: { ambient: 0.38, hemi: 0.3, key: 0.75, fill: 0.2, rim: 0.85, exposure: 0.95, shadows: false, pixelCap: 1.35 },
+    verylow: { ambient: 0.26, hemi: 0.18, key: 0.52, fill: 0.1, rim: 0.42, exposure: 0.9, shadows: false, pixelCap: 1 }
+  };
+  const q = profiles[AppSettings.quality] || profiles.high;
+
+  renderer.physicallyCorrectLights = AppSettings.quality === "ultra";
+  renderer.toneMapping = AppSettings.quality === "verylow" ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = q.exposure;
+  renderer.shadowMap.enabled = q.shadows;
+  renderer.shadowMap.type = AppSettings.quality === "ultra" ? THREE.PCFSoftShadowMap : THREE.PCFShadowMap;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, q.pixelCap));
+  renderer.setSize(rendererContainer.clientWidth || window.innerWidth, rendererContainer.clientHeight || window.innerHeight, false);
+
+  if (sceneLights.ambient) sceneLights.ambient.intensity = q.ambient;
+  if (sceneLights.hemi) sceneLights.hemi.intensity = q.hemi;
+  if (sceneLights.key) {
+    sceneLights.key.intensity = q.key;
+    sceneLights.key.castShadow = q.shadows;
+    if (q.shadows) {
+      sceneLights.key.shadow.mapSize.set(2048, 2048);
+      sceneLights.key.shadow.bias = -0.0002;
+    }
+  }
+  if (sceneLights.fill) sceneLights.fill.intensity = q.fill;
+  if (sceneLights.rim) sceneLights.rim.intensity = q.rim;
+
+  configurePostProcessing();
+}
 
 // Convert hex string to Three.js color and emissive properties
 function generateColorConfig(hex) {
@@ -490,13 +899,19 @@ function getSharedGeometries() {
 
   // Quality dictates mesh segment resolution
   let segs = 64;
-  if (AppSettings.quality === "medium") segs = 32;
-  if (AppSettings.quality === "low") segs = 16;
+  if (AppSettings.quality === "ultra") segs = 96;
+  if (AppSettings.quality === "medium") segs = 36;
+  if (AppSettings.quality === "low") segs = 18;
+  if (AppSettings.quality === "verylow") segs = 12;
 
   let pSegs = segs;
   let tSegsR = segs, tSegsT = segs * 2;
   // Reduce detail for inner electron spheres since they are small
-  let eSegs = AppSettings.quality === "low" ? 12 : (AppSettings.quality === "medium" ? 24 : 32);
+  let eSegs = 32;
+  if (AppSettings.quality === "ultra") eSegs = 42;
+  if (AppSettings.quality === "medium") eSegs = 24;
+  if (AppSettings.quality === "low") eSegs = 12;
+  if (AppSettings.quality === "verylow") eSegs = 8;
 
   sharedGeo.electron = new THREE.SphereGeometry(0.08, eSegs, eSegs);
   sharedGeo.electronGlow = new THREE.SphereGeometry(0.16, eSegs, eSegs);
@@ -516,7 +931,7 @@ function createNucleus(Z, visualScale) {
   const radius = (0.18 + Math.log10(Math.max(1, Z)) * 0.12) * Math.max(0.5, visualScale * 1.4);
 
   const mat = new THREE.MeshPhysicalMaterial({
-    color: 0xffc96d, emissive: 0xffcc88, emissiveIntensity: 0.5,
+    color: 0xffc96d, emissive: 0xffcc88, emissiveIntensity: 0.15,
     roughness: 0.2, metalness: 0.3, transparent: true, opacity: 0.96,
     clearcoat: 1, clearcoatRoughness: 0.1, depthWrite: true
   });
@@ -525,15 +940,413 @@ function createNucleus(Z, visualScale) {
   // Force nucleus to draw early so that orbitals correctly blend over it or are hidden behind it
   mesh.renderOrder = 1;
 
-  const glow = new THREE.Mesh(
-    geo.nucleusGlow,
-    new THREE.MeshBasicMaterial({ color: 0xfff0aa, transparent: true, opacity: 0.18, depthWrite: false })
-  );
-  glow.scale.setScalar(radius);
-  // Nucleus glow draws with the nucleus
-  glow.renderOrder = 1;
-  mesh.add(glow);
+  // No glow sphere around nucleus — avoids confusion with orbitals
   return mesh;
+}
+
+// --- Radial Node Computation (Hydrogen-like Wavefunction) ---
+// The radial wavefunction R_nl(r) has (n - l - 1) radial nodes.
+// Node positions are zeros of the associated Laguerre polynomial L^(2l+1)_(n-l-1)(ρ)
+// where ρ = 2r/(n·a₀). We store pre-computed zeros scaled in units of (n·a₀/2).
+
+/**
+ * Compute zeros of the associated Laguerre polynomial L^α_k(x)
+ * using Newton's method. These give radial node positions.
+ * Returns array of k zeros in ascending order.
+ */
+function laguerreZeros(k, alpha) {
+  if (k <= 0) return [];
+
+  // Evaluate L^α_k(x) using the recurrence relation
+  function laguerre(x, k, alpha) {
+    if (k === 0) return 1;
+    if (k === 1) return 1 + alpha - x;
+    let Lm2 = 1;
+    let Lm1 = 1 + alpha - x;
+    let L = 0;
+    for (let j = 2; j <= k; j++) {
+      L = ((2 * j - 1 + alpha - x) * Lm1 - (j - 1 + alpha) * Lm2) / j;
+      Lm2 = Lm1;
+      Lm1 = L;
+    }
+    return L;
+  }
+
+  // Derivative via recurrence: d/dx L^α_k(x) = -L^(α+1)_(k-1)(x)
+  function laguerreDeriv(x, k, alpha) {
+    if (k === 0) return 0;
+    return -laguerre(x, k - 1, alpha + 1);
+  }
+
+  const zeros = [];
+  // Initial guesses using approximation from Tricomi (1947)
+  for (let i = 1; i <= k; i++) {
+    // Approximate i-th zero
+    let x = (Math.PI * (4 * i - 1)) / (4 * k + 2 * alpha + 2);
+    x = x * x * (k + (alpha + 1) / 2);
+    // Better initial guess: Stroud & Secrest formula
+    if (i === 1) {
+      x = (1 + alpha) * (3 + 0.92 * alpha) / (1 + 2.4 * k + 1.8 * alpha);
+    } else if (i === 2) {
+      x = zeros[0] + (4 + alpha) / (1 + 0.156 * alpha) * (1 + 0.2 * alpha);
+    } else {
+      const ratio = (1 + 2.55 * (i - 2)) / (1.9 * (i - 2));
+      x = zeros[i - 2] + ratio * (zeros[i - 2] - (zeros[i - 3] || 0));
+    }
+
+    // Newton's method refinement
+    for (let iter = 0; iter < 50; iter++) {
+      const val = laguerre(x, k, alpha);
+      const deriv = laguerreDeriv(x, k, alpha);
+      if (Math.abs(deriv) < 1e-15) break;
+      const dx = val / deriv;
+      x -= dx;
+      if (Math.abs(dx) < 1e-12 * Math.max(1, Math.abs(x))) break;
+    }
+    zeros.push(x);
+  }
+  return zeros.sort((a, b) => a - b);
+}
+
+/**
+ * Get radial node positions for orbital (n, l) scaled to visual shell radius.
+ * ρ_node = zeros of L^(2l+1)_(n-l-1)(ρ), then r_node = ρ_node × n / 2 × (shellRadius/n)
+ * Returns fractional positions (0..1) relative to shellRadius.
+ */
+function getRadialNodeFractions(n, l) {
+  const k = n - l - 1; // number of radial nodes
+  if (k <= 0) return [];
+  const alpha = 2 * l + 1;
+  const rhoZeros = laguerreZeros(k, alpha);
+  // Convert ρ zeros to r in units of a₀: r = ρ × n·a₀/2
+  // Maximum r for the orbital scales as ~n²·a₀, so fraction = (ρ×n/2) / n² = ρ/(2n)
+  // But for visual mapping we want fraction relative to the displayed shell radius
+  const rMax = rhoZeros.length > 0 ? Math.max(...rhoZeros) * 1.5 : 1;
+  return rhoZeros.map(rho => rho / (rMax + alpha * 0.5));
+}
+
+// --- Particle View (Probability Density |Ψ|² Point Cloud) ---
+// Generates point clouds sampling the hydrogen-like probability density
+// |Ψ_nlm(r,θ,φ)|² = |R_nl(r)|² × |Y_lm(θ,φ)|²
+
+/**
+ * Evaluate the radial wavefunction R_nl(r) for hydrogen-like atom.
+ * R_nl(r) = N × (2r/n)^l × e^(-r/n) × L^(2l+1)_(n-l-1)(2r/n)
+ * Returns |R_nl(r)|² (probability density radial part).
+ * r is in units of a₀ (Bohr radius), scaled to visualization coords.
+ */
+function radialProbability(r, n, l) {
+  if (r < 0) return 0;
+  const rho = 2 * r / n;
+
+  // Associated Laguerre polynomial L^(2l+1)_(n-l-1)(rho)
+  const k = n - l - 1;
+  const alpha = 2 * l + 1;
+  let Lm2 = 1, Lm1 = 1 + alpha - rho, L;
+  if (k === 0) L = 1;
+  else if (k === 1) L = 1 + alpha - rho;
+  else {
+    for (let j = 2; j <= k; j++) {
+      L = ((2 * j - 1 + alpha - rho) * Lm1 - (j - 1 + alpha) * Lm2) / j;
+      Lm2 = Lm1;
+      Lm1 = L;
+    }
+  }
+
+  // Normalization (simplified — we only need relative density for visualization)
+  const rhoL = Math.pow(rho, l);
+  const expPart = Math.exp(-rho / 2);
+  const R = rhoL * expPart * L;
+  return R * R;
+}
+
+/**
+ * Evaluate |Y_lm(θ,φ)|² (angular probability density).
+ * Uses real spherical harmonics for visualization.
+ */
+function angularProbability(theta, phi, l, m) {
+  const cosTheta = Math.cos(theta);
+  const sinTheta = Math.sin(theta);
+
+  if (l === 0) {
+    // Y_00 = 1/(4π)^½ → |Y|² = 1/(4π) (uniform)
+    return 1;
+  }
+
+  if (l === 1) {
+    // Real spherical harmonics for p orbitals
+    if (m === 0) {
+      // p_z: Y ∝ cos(θ)
+      return cosTheta * cosTheta;
+    } else if (m === 1 || m === -1) {
+      // p_x or p_y: Y ∝ sin(θ)cos(φ) or sin(θ)sin(φ)
+      const trig = m === 1 ? Math.cos(phi) : Math.sin(phi);
+      return sinTheta * sinTheta * trig * trig;
+    }
+  }
+
+  if (l === 2) {
+    // Real spherical harmonics for d orbitals
+    if (m === 0) {
+      // d_z²: Y ∝ (3cos²θ - 1)
+      const val = 3 * cosTheta * cosTheta - 1;
+      return val * val;
+    } else if (Math.abs(m) === 1) {
+      // d_xz or d_yz: Y ∝ sinθ·cosθ·cos(φ) or sin(φ)
+      const trig = m > 0 ? Math.cos(phi) : Math.sin(phi);
+      return sinTheta * sinTheta * cosTheta * cosTheta * trig * trig;
+    } else {
+      // d_xy or d_x²-y²: Y ∝ sin²θ·cos(2φ) or sin(2φ)
+      const trig = m > 0 ? Math.cos(2 * phi) : Math.sin(2 * phi);
+      return Math.pow(sinTheta, 4) * trig * trig;
+    }
+  }
+
+  if (l === 3) {
+    // Exact associated Legendre polynomials for f orbitals (l=3)
+    const absM = Math.abs(m);
+    const cos2 = cosTheta * cosTheta;
+    const sin2 = sinTheta * sinTheta;
+
+    if (absM === 0) {
+      // f_z³: P_3^0(cosθ) ∝ 5cos³θ - 3cosθ
+      const P = cosTheta * (5 * cos2 - 3);
+      return P * P;
+    } else if (absM === 1) {
+      // f_xz² / f_yz²: P_3^1(cosθ) ∝ (5cos²θ - 1)sinθ
+      const P = (5 * cos2 - 1) * sinTheta;
+      const trig = m > 0 ? Math.cos(phi) : Math.sin(phi);
+      return P * P * trig * trig;
+    } else if (absM === 2) {
+      // f_xyz / f(x²-y²)z: P_3^2(cosθ) ∝ cosθ·sin²θ
+      const P = cosTheta * sin2;
+      const trig = m > 0 ? Math.sin(2 * phi) : Math.cos(2 * phi);
+      return P * P * trig * trig;
+    } else {
+      // m = ±3: f_x³ / f_y³: P_3^3(cosθ) ∝ sin³θ
+      const P = sinTheta * sin2;
+      const trig = m > 0 ? Math.sin(3 * phi) : Math.cos(3 * phi);
+      return P * P * trig * trig;
+    }
+  }
+
+  // l >= 4 (g+ orbitals — not found in known elements, but handle gracefully)
+  // Use the general associated Legendre formula as a fallback
+  const absM = Math.abs(m);
+  const P = Math.pow(sinTheta, absM) * Math.pow(cosTheta, l - absM);
+  const trig = m >= 0 ? Math.cos(absM * phi) : Math.sin(absM * phi);
+  return P * P * trig * trig;
+}
+
+// --- Quantum CDF Probability Sampling (Exact Legendre Eigenstates) ---
+const quantumCdfCache = new Map();
+
+// ── Exact port of YouTuber's CDF sampling (C++ → JS) ──────────────────────
+// Credit: [YouTuber name/link] for the sampling approach
+
+function buildQuantumCDFs(n, l, m) {
+  const key = `${n}_${l}_${m}`;
+  if (quantumCdfCache.has(key)) return quantumCdfCache.get(key);
+
+  const a0 = 1; // Bohr radius in atomic units
+
+  // ── Radial CDF (his sampleR) ─────────────────────────────────────────────
+  const rSteps = 4096;
+  const rMax = 10 * n * n * a0;
+  const dr = rMax / (rSteps - 1);
+  const radialCDF = new Float64Array(rSteps);
+  let rSum = 0;
+
+  for (let i = 0; i < rSteps; i++) {
+    const r = i * dr;
+    const rho = 2 * r / (n * a0);
+    const k = n - l - 1;   // degree of Laguerre polynomial
+    const a = 2 * l + 1;   // alpha parameter
+
+    // Associated Laguerre polynomial via recurrence (his lines 44-47)
+    let L = 1, L1 = 1 + a - rho;
+    if (k === 0)      { L = 1; }
+    else if (k === 1) { L = L1; }
+    else {
+      for (let j = 2; j <= k; j++) {
+        const Lnew = ((2*j - 1 + a - rho) * L1 - (j - 1 + a) * L) / j;
+        L = L1;
+        L1 = Lnew;
+      }
+      L = L1;
+    }
+
+    // Full normalized radial wavefunction R_nl (his lines 50-51)
+    // R = sqrt((2/na0)^3 * (n-l-1)! / (2n*(n+l)!)) * exp(-rho/2) * rho^l * L
+    const norm = Math.sqrt(
+      Math.pow(2 / (n * a0), 3) *
+      gamma(n - l) /          // (n-l-1)! = gamma(n-l)
+      (2 * n * gamma(n + l + 1)) // (n+l)!  = gamma(n+l+1)
+    );
+    const R = norm * Math.exp(-rho / 2) * Math.pow(rho, l) * L;
+
+    // r² |R|² is the radial probability density (his line 53)
+    rSum += r * r * R * R;
+    radialCDF[i] = rSum;
+  }
+  for (let i = 0; i < rSteps; i++) radialCDF[i] /= rSum;
+
+  // ── Theta CDF (his sampleTheta) ──────────────────────────────────────────
+  const thetaSteps = 2048;
+  const dTheta = Math.PI / (thetaSteps - 1);
+  const thetaCDF = new Float64Array(thetaSteps);
+  const absM = Math.abs(m); // his code uses |m| throughout
+  let thetaSum = 0;
+
+  for (let i = 0; i < thetaSteps; i++) {
+    const theta = i * dTheta;
+    const x = Math.cos(theta); // x = cos(θ)
+
+    // Associated Legendre P_l^|m|(x) via his recurrence (lines 73-81)
+    let Pmm = 1.0;
+    if (absM > 0) {
+      const s = Math.sqrt((1 - x) * (1 + x)); // sin(θ)
+      let f = 1;
+      for (let j = 1; j <= absM; j++) {
+        Pmm *= -f * s;
+        f += 2;
+      }
+    }
+
+    let Plm;
+    if (l === absM) {
+      Plm = Pmm;
+    } else {
+      let Pm1m = x * (2 * absM + 1) * Pmm;
+      if (l === absM + 1) {
+        Plm = Pm1m;
+      } else {
+        Plm = Pm1m; // will be overwritten
+        for (let ll = absM + 2; ll <= l; ll++) {
+          const Pll = ((2*ll - 1) * x * Pm1m - (ll + absM - 1) * Pmm) / (ll - absM);
+          Pmm = Pm1m;
+          Pm1m = Pll;
+          Plm = Pll;
+        }
+      }
+    }
+
+    // sin(θ) * P_l^|m|(cosθ)² (his line 82)
+    thetaSum += Math.sin(theta) * Plm * Plm;
+    thetaCDF[i] = thetaSum;
+  }
+  for (let i = 0; i < thetaSteps; i++) thetaCDF[i] /= thetaSum;
+
+  const cdfs = { radialCDF, thetaCDF, rMax };
+  quantumCdfCache.set(key, cdfs);
+  return cdfs;
+}
+
+// Gamma function (needed for the normalization constant above)
+// Uses Lanczos approximation — accurate to ~15 significant figures
+function gamma(z) {
+  if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
+  z -= 1;
+  const g = 7;
+  const c = [
+    0.99999999999980993,  676.5203681218851,    -1259.1392167224028,
+    771.32342877765313,   -176.61502916214059,   12.507343278686905,
+    -0.13857109526572012,  9.9843695780195716e-6, 1.5056327351493116e-7
+  ];
+  let x = c[0];
+  for (let i = 1; i < g + 2; i++) x += c[i] / (z + i);
+  const t = z + g + 0.5;
+  return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+}
+
+function sampleCDF(cdf, maxVal) {
+  const r = Math.random();
+  let low = 0, high = cdf.length - 1;
+  while (low <= high) {
+    const mid = (low + high) >> 1;
+    if (cdf[mid] < r) low = mid + 1;
+    else high = mid - 1;
+  }
+  if (low >= cdf.length) low = cdf.length - 1;
+  return (low / (cdf.length - 1)) * maxVal;
+}
+
+
+
+// --- Spin Arrow Sprites ---
+// Creates a sprite showing ↑ (spin up, m_s = +½) or ↓ (spin down, m_s = -½)
+
+function createSpinArrowTexture(spinUp) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+
+  // Clear
+  ctx.clearRect(0, 0, 64, 64);
+
+  // Draw arrow
+  ctx.fillStyle = spinUp ? "#00ffaa" : "#ff6688";
+  ctx.strokeStyle = spinUp ? "#00ffaa" : "#ff6688";
+  ctx.lineWidth = 4;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  const cx = 32, cy = 32;
+
+  if (spinUp) {
+    // ↑ arrow
+    ctx.beginPath();
+    ctx.moveTo(cx, 12);      // tip
+    ctx.lineTo(cx - 12, 28); // left barb
+    ctx.moveTo(cx, 12);
+    ctx.lineTo(cx + 12, 28); // right barb
+    ctx.moveTo(cx, 12);
+    ctx.lineTo(cx, 52);      // shaft
+    ctx.stroke();
+  } else {
+    // ↓ arrow
+    ctx.beginPath();
+    ctx.moveTo(cx, 52);      // tip
+    ctx.lineTo(cx - 12, 36); // left barb
+    ctx.moveTo(cx, 52);
+    ctx.lineTo(cx + 12, 36); // right barb
+    ctx.moveTo(cx, 52);
+    ctx.lineTo(cx, 12);      // shaft
+    ctx.stroke();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+// Cache spin textures
+let spinUpTexture = null;
+let spinDownTexture = null;
+
+function getSpinTexture(spinUp) {
+  if (spinUp) {
+    if (!spinUpTexture) spinUpTexture = createSpinArrowTexture(true);
+    return spinUpTexture;
+  } else {
+    if (!spinDownTexture) spinDownTexture = createSpinArrowTexture(false);
+    return spinDownTexture;
+  }
+}
+
+function createSpinArrowSprite(spinUp) {
+  const texture = getSpinTexture(spinUp);
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    opacity: 0.9,
+    depthWrite: false,
+    sizeAttenuation: true
+  });
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(0.3, 0.3, 0.3);
+  return sprite;
 }
 
 // --- Create an electron with glow ---
@@ -567,6 +1380,17 @@ function createElectronMesh() {
 // --- Orbital shape builders ---
 // Each returns a THREE.Object3D (the translucent shell) and positions for electrons.
 
+function getOrbitalVisualProfile() {
+  const map = {
+    ultra: { emissiveMult: 1.45, opacityMult: 1.45 },
+    high: { emissiveMult: 1.22, opacityMult: 1.22 },
+    medium: { emissiveMult: 1.08, opacityMult: 1.1 },
+    low: { emissiveMult: 1.0, opacityMult: 1.0 },
+    verylow: { emissiveMult: 0.9, opacityMult: 0.9 }
+  };
+  return map[AppSettings.quality] || map.high;
+}
+
 /**
  * s orbital: sphere
  * Radius proportional to n
@@ -574,17 +1398,18 @@ function createElectronMesh() {
 function createSOrbital(n, shellRadius, color, fillRatio) {
   const geo = getSharedGeometries();
   const group = new THREE.Group();
+  const v = getOrbitalVisualProfile();
 
   const mat = new THREE.MeshPhysicalMaterial({
     color: color.main,
     emissive: color.emissive,
-    emissiveIntensity: 0.15 + fillRatio * 0.15,
+    emissiveIntensity: (0.2 + fillRatio * 0.2) * v.emissiveMult,
     roughness: 0.2,
     metalness: 0.3,
     clearcoat: 1.0,
     clearcoatRoughness: 0.1,
     transparent: true,
-    opacity: 0.1 + fillRatio * 0.12,
+    opacity: Math.min(0.72, (0.14 + fillRatio * 0.16) * v.opacityMult),
     side: THREE.DoubleSide,
     depthWrite: false
   });
@@ -614,19 +1439,20 @@ function createSOrbital(n, shellRadius, color, fillRatio) {
  */
 function createPLobe(shellRadius, lobeLength, color, fillRatio) {
   const group = new THREE.Group();
+  const v = getOrbitalVisualProfile();
 
   // Use a stretched sphere for each lobe (ellipsoid)
   const lobeGeo = new THREE.SphereGeometry(1, getSharedGeometries().lobeSegments, getSharedGeometries().lobeSegments);
   const lobeMat = new THREE.MeshPhysicalMaterial({
     color: color.main,
     emissive: color.emissive,
-    emissiveIntensity: 0.15 + fillRatio * 0.15,
+    emissiveIntensity: (0.2 + fillRatio * 0.2) * v.emissiveMult,
     roughness: 0.2,
     metalness: 0.3,
     clearcoat: 1.0,
     clearcoatRoughness: 0.1,
     transparent: true,
-    opacity: 0.12 + fillRatio * 0.12,
+    opacity: Math.min(0.72, (0.14 + fillRatio * 0.15) * v.opacityMult),
     side: THREE.DoubleSide,
     depthWrite: false
   });
@@ -642,7 +1468,7 @@ function createPLobe(shellRadius, lobeLength, color, fillRatio) {
 
   // Negative lobe
   const lobe2 = new THREE.Mesh(lobeGeo, lobeMat.clone());
-  lobe2.material.emissiveIntensity = 0.1 + fillRatio * 0.1;
+  lobe2.material.emissiveIntensity = (0.13 + fillRatio * 0.13) * v.emissiveMult;
   lobe2.scale.set(lobeWidth, lobeLength * 0.41, lobeWidth);
   lobe2.position.y = -lobeLength * 0.41;
   lobe2.renderOrder = 2; // Render after nucleus
@@ -668,23 +1494,28 @@ function createPOrbital(n, mLocal, shellRadius, color, fillRatio) {
 }
 
 /**
- * d orbital: four-lobed cloverleaf shapes
- * Uses 4 lobes arranged in a plane, or a donut+dumbbell for dz²
+ * d orbital: four-lobed cloverleaf shapes or torus+dumbbell (dz²).
+ * m_l: actual magnetic quantum number (-2 to +2).
+ * Standard real spherical harmonic convention:
+ *   m_l=0  → d_z²: torus (equatorial belt) + two polar lobes
+ *   m_l=±1 → d_xz / d_yz: two lobes in xz / yz plane
+ *   m_l=±2 → d_xy / d_(x²-y²): four-lobed cloverleaf in xy plane
  */
-function createDOrbital(n, mLocal, shellRadius, color, fillRatio) {
+function createDOrbital(n, m_l, shellRadius, color, fillRatio) {
   const group = new THREE.Group();
   const sg = getSharedGeometries();
+  const v = getOrbitalVisualProfile();
   const lobeGeo = new THREE.SphereGeometry(1, sg.lobeSegments, sg.lobeSegments);
   const lobeMat = new THREE.MeshPhysicalMaterial({
     color: color.main,
     emissive: color.emissive,
-    emissiveIntensity: 0.12 + fillRatio * 0.12,
+    emissiveIntensity: (0.16 + fillRatio * 0.16) * v.emissiveMult,
     roughness: 0.2,
     metalness: 0.3,
     clearcoat: 1.0,
     clearcoatRoughness: 0.1,
     transparent: true,
-    opacity: 0.1 + fillRatio * 0.1,
+    opacity: Math.min(0.7, (0.12 + fillRatio * 0.13) * v.opacityMult),
     side: THREE.DoubleSide,
     depthWrite: false
   });
@@ -692,9 +1523,8 @@ function createDOrbital(n, mLocal, shellRadius, color, fillRatio) {
   const lobeSize = shellRadius * 0.3;
   const lobeOffset = shellRadius * 0.45;
 
-  if (mLocal === 4) {
-    // dz²: torus + two polar lobes
-    const sg = getSharedGeometries();
+  if (m_l === 0) {
+    // d_z²: torus (equatorial belt) + two polar lobes along z-axis
     const torusGeo = new THREE.TorusGeometry(shellRadius * 0.38, shellRadius * 0.12, sg.torusSegments.radial, sg.torusSegments.tubular);
     const torus = new THREE.Mesh(torusGeo, lobeMat);
     group.add(torus);
@@ -708,8 +1538,32 @@ function createDOrbital(n, mLocal, shellRadius, color, fillRatio) {
     botLobe.scale.set(lobeSize * 0.7, lobeSize * 1.2, lobeSize * 0.7);
     botLobe.position.y = -lobeOffset;
     group.add(botLobe);
+  } else if (Math.abs(m_l) === 1) {
+    // d_xz (m_l=+1) or d_yz (m_l=-1): two lobes
+    // Default lobe axis is y; rotate to place lobes in the correct plane
+    const lobeMatNeg = lobeMat.clone();
+    lobeMatNeg.emissiveIntensity = (0.1 + fillRatio * 0.1) * v.emissiveMult;
+
+    const topLobe = new THREE.Mesh(lobeGeo, lobeMat);
+    topLobe.scale.set(lobeSize * 0.8, lobeSize * 1.1, lobeSize * 0.8);
+    topLobe.position.y = lobeOffset;
+    group.add(topLobe);
+
+    const botLobe = new THREE.Mesh(lobeGeo, lobeMatNeg);
+    botLobe.scale.set(lobeSize * 0.8, lobeSize * 1.1, lobeSize * 0.8);
+    botLobe.position.y = -lobeOffset;
+    group.add(botLobe);
+
+    if (m_l === 1) {
+      // d_xz: lobes in xz plane — rotate around y-axis
+      group.rotation.y = Math.PI / 2;
+    } else {
+      // d_yz: lobes in yz plane — rotate around x-axis
+      group.rotation.x = Math.PI / 2;
+    }
   } else {
-    // Four-lobed cloverleaf
+    // m_l = ±2: d_xy (m_l=+2) or d_(x²-y²) (m_l=-2)
+    // Four-lobed cloverleaf in xy plane
     const angles = [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2];
     for (const angle of angles) {
       const lobe = new THREE.Mesh(lobeGeo, lobeMat);
@@ -719,37 +1573,40 @@ function createDOrbital(n, mLocal, shellRadius, color, fillRatio) {
       group.add(lobe);
     }
 
-    // Rotate the cloverleaf based on m quantum number
-    if (mLocal === 0) {
-      // xy plane (default)
-    } else if (mLocal === 1) {
-      group.rotation.x = Math.PI / 2; // yz plane
-    } else if (mLocal === 2) {
-      group.rotation.z = Math.PI / 2; // xz plane
-    } else if (mLocal === 3) {
-      group.rotation.y = Math.PI / 4; // xy rotated 45°
+    if (m_l === 2) {
+      // d_xy: cloverleaf rotated 45° from axes
+      group.rotation.y = Math.PI / 4;
     }
+    // m_l=-2 → d_(x²-y²): cloverleaf aligned with axes (default, no rotation)
   }
 
   return group;
 }
 
 /**
- * f orbital: multi-lobed (8 lobes arranged in 3D)
+ * f orbital: multi-lobed shapes following real spherical harmonics (l=3).
+ * m_l: actual magnetic quantum number (-3 to +3).
+ * Standard real spherical harmonic convention:
+ *   m_l=0   → fz³: 2 polar lobes + 6 equatorial (3 planar nodes)
+ *   m_l=±1  → fxz²/fyz²: 4 lobes in xz/yz plane
+ *   m_l=±2  → fxyz/f(x²-y²)z: 4 lobes rotated 45° around z
+ *   m_l=±3  → fx³/fy³: 4 lobes in xy-oriented planes
  */
-function createFOrbital(n, mLocal, shellRadius, color, fillRatio) {
+function createFOrbital(n, m_l, shellRadius, color, fillRatio) {
   const group = new THREE.Group();
-  const lobeGeo = new THREE.SphereGeometry(1, 64, 64);
+  const sg = getSharedGeometries();
+  const v = getOrbitalVisualProfile();
+  const lobeGeo = new THREE.SphereGeometry(1, sg.lobeSegments, sg.lobeSegments);
   const lobeMat = new THREE.MeshPhysicalMaterial({
     color: color.main,
     emissive: color.emissive,
-    emissiveIntensity: 0.1 + fillRatio * 0.1,
+    emissiveIntensity: (0.14 + fillRatio * 0.14) * v.emissiveMult,
     roughness: 0.2,
     metalness: 0.3,
     clearcoat: 1.0,
     clearcoatRoughness: 0.1,
     transparent: true,
-    opacity: 0.08 + fillRatio * 0.08,
+    opacity: Math.min(0.68, (0.1 + fillRatio * 0.1) * v.opacityMult),
     side: THREE.DoubleSide,
     depthWrite: false
   });
@@ -757,8 +1614,9 @@ function createFOrbital(n, mLocal, shellRadius, color, fillRatio) {
   const lobeSize = shellRadius * 0.22;
   const lobeOffset = shellRadius * 0.45;
 
-  if (mLocal === 6) {
-    // fz³ type: 2 polar + torus-like ring of 6
+  if (m_l === 0) {
+    // fz³ type: 2 large polar lobes + 6 smaller equatorial lobes
+    // (axial symmetry with 3 planar nodes at specific angles)
     const topLobe = new THREE.Mesh(lobeGeo, lobeMat);
     topLobe.scale.setScalar(lobeSize * 1.1);
     topLobe.position.y = lobeOffset * 1.1;
@@ -777,23 +1635,53 @@ function createFOrbital(n, mLocal, shellRadius, color, fillRatio) {
       lobe.position.z = lobeOffset * 0.7 * Math.sin(angle);
       group.add(lobe);
     }
+  } else if (Math.abs(m_l) <= 2) {
+    // m_l = ±1: fxz² / fyz² — 4 lobes in xz or yz plane
+    // m_l = ±2: fxyz / f(x²-y²)z — 4 lobes at 45° to axes
+    // Both are 4-lobe structures with different plane orientations
+    const d = lobeOffset * 0.65;
+    const posLobe = new THREE.Mesh(lobeGeo, lobeMat);
+    posLobe.scale.setScalar(lobeSize);
+    posLobe.position.set(d, d, 0);
+    group.add(posLobe);
+
+    const negLobe = new THREE.Mesh(lobeGeo, lobeMat.clone());
+    negLobe.scale.setScalar(lobeSize);
+    negLobe.position.set(-d, -d, 0);
+    group.add(negLobe);
+
+    const posLobe2 = new THREE.Mesh(lobeGeo, lobeMat.clone());
+    posLobe2.scale.setScalar(lobeSize);
+    posLobe2.position.set(-d, d, 0);
+    group.add(posLobe2);
+
+    const negLobe2 = new THREE.Mesh(lobeGeo, lobeMat.clone());
+    negLobe2.scale.setScalar(lobeSize);
+    negLobe2.position.set(d, -d, 0);
+    group.add(negLobe2);
+
+    if (Math.abs(m_l) === 1) {
+      // fxz² (m_l=+1) or fyz² (m_l=-1): in xz or yz plane
+      if (m_l === -1) group.rotation.y = Math.PI / 2;
+    } else {
+      // fxyz (m_l=+2) or f(x²-y²)z (m_l=-2): rotated 45° around z
+      group.rotation.z = Math.PI / 4;
+      if (m_l === -2) group.rotation.y = Math.PI / 2;
+    }
   } else {
-    // Generic 8-lobe arrangement (cube vertices)
+    // m_l = ±3: fx³ / fy³ — 4 lobes in rotated planes
+    const d = lobeOffset * 0.6;
     const offsets = [
-      [1, 1, 1], [1, 1, -1], [1, -1, 1], [1, -1, -1],
-      [-1, 1, 1], [-1, 1, -1], [-1, -1, 1], [-1, -1, -1]
+      [1, 1, 0], [-1, -1, 0], [1, -1, 0], [-1, 1, 0]
     ];
     for (const off of offsets) {
-      const lobe = new THREE.Mesh(lobeGeo, lobeMat);
+      const lobe = new THREE.Mesh(lobeGeo, lobeMat.clone());
       lobe.scale.setScalar(lobeSize);
-      const d = lobeOffset * 0.58;
       lobe.position.set(off[0] * d, off[1] * d, off[2] * d);
       group.add(lobe);
     }
-
-    // Rotate per m to distinguish them
-    group.rotation.y = mLocal * Math.PI / 7;
-    if (mLocal % 2 === 1) group.rotation.x = Math.PI / 6;
+    // Rotate 60° around z for m_l=+3, 60°+90° for m_l=-3
+    group.rotation.z = (m_l > 0) ? Math.PI / 3 : Math.PI / 3 + Math.PI / 2;
   }
 
   return group;
@@ -952,17 +1840,18 @@ function buildAtom(element) {
       // Calculate actual m_l: from -l to +l
       const ml = mIdx - l;
 
-      // Create the orbital shape
+      // Create the orbital shape (surface mesh)
       let orbitalShape;
       if (l === 0) {
         orbitalShape = createSOrbital(n, shellRadius, color, mFillRatio);
       } else if (l === 1) {
         orbitalShape = createPOrbital(n, mIdx, shellRadius, color, mFillRatio);
       } else if (l === 2) {
-        orbitalShape = createDOrbital(n, mIdx, shellRadius, color, mFillRatio);
+        orbitalShape = createDOrbital(n, ml, shellRadius, color, mFillRatio);
       } else {
-        orbitalShape = createFOrbital(n, mIdx, shellRadius, color, mFillRatio);
+        orbitalShape = createFOrbital(n, ml, shellRadius, color, mFillRatio);
       }
+
       rootGroup.add(orbitalShape);
 
       // Collect original material opacities for hover/focus restore
@@ -989,37 +1878,49 @@ function buildAtom(element) {
       const numElectrons = occupancies[mIdx];
       for (let e = 0; e < numElectrons; e++) {
         const eMesh = createElectronMesh();
-        rootGroup.add(eMesh);
 
-        const phase = (e / numElectrons) * Math.PI * 2 + orbitalIndex * 0.7;
-        const speed = 0.5 + 0.15 / Math.max(1, n * 0.5);
+          // --- Spin arrow sprite ---
+          const isSpinUp = e === 0;
+          const spinArrow = createSpinArrowSprite(isSpinUp);
+          spinArrow.position.set(0.15, 0.2, 0);
+          eMesh.add(spinArrow);
 
-        let pathFn;
-        if (l === 0) {
-          // Circular orbit on tilted plane
-          const tiltX = orbitalIndex * 1.2 + e * 0.5;
-          const tiltZ = orbitalIndex * 0.8 + e * 0.3;
-          pathFn = sOrbitalPath(shellRadius * 0.85, tiltX, tiltZ);
-        } else if (l === 1) {
-          const axes = ["x", "y", "z"];
-          pathFn = pOrbitalPath(shellRadius * 1.1, axes[mIdx] || "y");
-        } else {
-          // General tilted orbit for d and f
-          const tiltX = mIdx * 0.5 + e * Math.PI;
-          const tiltY = mIdx * 0.7 + orbitalIndex * 0.3;
-          const tiltZ = e * 0.4;
-          pathFn = generalOrbitalPath(shellRadius * 0.8, tiltX, tiltY, tiltZ);
+          rootGroup.add(eMesh);
+
+          const phase = (e / numElectrons) * Math.PI * 2 + orbitalIndex * 0.7;
+          const speed = 0.5 + 0.15 / Math.max(1, n * 0.5);
+
+          let pathFn;
+          if (l === 0) {
+            const tiltX = orbitalIndex * 1.2 + e * 0.5;
+            const tiltZ = orbitalIndex * 0.8 + e * 0.3;
+            pathFn = sOrbitalPath(shellRadius * 0.85, tiltX, tiltZ);
+          } else if (l === 1) {
+            const axes = ["x", "y", "z"];
+            pathFn = pOrbitalPath(shellRadius * 1.1, axes[mIdx] || "y");
+          } else {
+            const tiltX = mIdx * 0.5 + e * Math.PI;
+            const tiltY = mIdx * 0.7 + orbitalIndex * 0.3;
+            const tiltZ = e * 0.4;
+            pathFn = generalOrbitalPath(shellRadius * 0.8, tiltX, tiltY, tiltZ);
+          }
+
+          const animator = new ElectronAnimator(eMesh, pathFn, speed, phase);
+          electronAnims.push(animator);
+          orbEntry.electrons.push(eMesh);
         }
-
-        const animator = new ElectronAnimator(eMesh, pathFn, speed, phase);
-        electronAnims.push(animator);
-        orbEntry.electrons.push(eMesh);
-      }
 
       orbitalRegistry.push(orbEntry);
       orbitalIndex++;
     }
   }
+
+  // Set dynamic zoom cap so the full atom is always visible.
+  // FOV-aware: camera distance ≥ extent / tan(half-FOV) with 20% margin.
+  const maxLForMaxN = Math.min(maxN - 1, 3);
+  const outermostShellRadius = maxN * visualScale * 0.9 + maxLForMaxN * visualScale * 0.15;
+  const halfFov = (40 * Math.PI / 180) / 2;
+  maxZoomRadius = Math.max(200, (outermostShellRadius / Math.tan(halfFov)) * 1.2);
 
   updateInfoPanel(element, filled);
 }
@@ -1049,7 +1950,10 @@ function findClosestOrbitalToRay() {
   }
 
   // Intersect against actual 3D objects, sorted by distance from camera
-  const intersects = raycaster.intersectObjects(clickTargets, false);
+  let intersects = [];
+  if (!isExplorerMode && rootGroup.visible) {
+    intersects = raycaster.intersectObjects(clickTargets, false);
+  }
 
   let bestIndex = -1;
   let bestScore = Infinity;
@@ -1148,9 +2052,8 @@ function restoreOrbitalOpacity(index) {
   const orb = orbitalRegistry[index];
   for (const { mat, opacity, emissiveIntensity } of orb.originalOpacities) {
     mat.opacity = opacity;
-    if (mat.emissiveIntensity !== undefined) {
-      mat.emissiveIntensity = emissiveIntensity;
-    }
+    if (mat.emissiveIntensity !== undefined) mat.emissiveIntensity = emissiveIntensity;
+    if (mat.wireframe !== undefined) mat.wireframe = false;
   }
 }
 
@@ -1281,6 +2184,9 @@ function updateFocusLabelPosition() {
   const entry = orbitalRegistry[focusedOrbitalIndex];
   if (!entry || !entry.shape) return;
 
+  // Ensure matrices are strictly updated even if rootGroup is bypassed
+  if (rootGroup) rootGroup.updateMatrixWorld(true);
+
   const worldPos = new THREE.Vector3();
   entry.shape.getWorldPosition(worldPos);
   // Offset upward by shell radius
@@ -1351,19 +2257,19 @@ function drawBohrModel(element, filled) {
   // Draw Nucleus
   const nucleusRadius = 24;
   const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, nucleusRadius);
-  gradient.addColorStop(0, "#fff3cf");
-  gradient.addColorStop(1, "#fca82d");
+  gradient.addColorStop(0, "#f5f7ff");
+  gradient.addColorStop(1, "#c6d3ff");
 
   ctx.beginPath();
   ctx.arc(cx, cy, nucleusRadius, 0, Math.PI * 2);
   ctx.fillStyle = gradient;
-  ctx.shadowColor = "rgba(255, 179, 71, 0.5)";
+  ctx.shadowColor = "rgba(198, 211, 255, 0.5)";
   ctx.shadowBlur = 12;
   ctx.fill();
   ctx.shadowBlur = 0; // reset shadow
 
   // Nucleus Text (Symbol)
-  ctx.fillStyle = "#331600";
+  ctx.fillStyle = "#0d1538";
   ctx.font = "bold 20px system-ui, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -1423,10 +2329,34 @@ function drawBohrModel(element, filled) {
 
 const inputEl = document.getElementById("element-input");
 const buttonEl = document.getElementById("load-button");
+const quantumModeBtn = document.getElementById("quantum-mode-btn");
+const quantumModeDot = document.getElementById("quantum-mode-dot");
 const infoElement = document.getElementById("info-element-text");
 const infoZ = document.getElementById("info-Z");
 const infoConfig = document.getElementById("info-config");
 const infoOrbitals = document.getElementById("info-orbitals");
+
+// Orbital Explorer Elements
+const expUi = document.getElementById("explorer-ui");
+const expLabel = document.getElementById("explorer-label");
+const expCloseBtn = document.getElementById("explorer-close-btn");
+
+const expN = document.getElementById("exp-n");
+const expL = document.getElementById("exp-l");
+const expM = document.getElementById("exp-m");
+const expPts = document.getElementById("exp-pts");
+const expSize = document.getElementById("exp-size");
+const expColor = document.getElementById("exp-color");
+
+const expValN = document.getElementById("exp-val-n");
+const expValL = document.getElementById("exp-val-l");
+const expValM = document.getElementById("exp-val-m");
+const expValPts = document.getElementById("exp-val-pts");
+const expValSize = document.getElementById("exp-val-size");
+
+let isExplorerMode = false;
+let explorerGroup = new THREE.Group();
+let explorerRenderTimeout = null;
 
 // Settings Elements
 const settingsBtn = document.getElementById("settings-button");
@@ -1441,6 +2371,8 @@ const setColF = document.getElementById("set-color-f");
 const setQual = document.getElementById("set-quality");
 const setStarfield = document.getElementById("set-starfield");
 const setAuto = document.getElementById("set-autorotate");
+const setInertia = document.getElementById("set-inertia");
+const setSens = document.getElementById("set-sensitivity");
 
 // Report issues elements
 const reportBtn = document.getElementById("report-button");
@@ -1449,6 +2381,9 @@ const reportText = document.getElementById("report-text");
 const reportStatus = document.getElementById("report-status");
 const reportCancelBtn = document.getElementById("report-cancel-btn");
 const reportSendBtn = document.getElementById("report-send-btn");
+const creditsBtn = document.getElementById("credits-button");
+const creditsModal = document.getElementById("credits-modal");
+const creditsCloseBtn = document.getElementById("credits-close-btn");
 
 function populateSettingsUI() {
   setColS.value = AppSettings.colors.s;
@@ -1458,6 +2393,8 @@ function populateSettingsUI() {
   setQual.value = AppSettings.quality;
   setStarfield.checked = AppSettings.starfield;
   setAuto.checked = AppSettings.autorotate;
+  setInertia.checked = AppSettings.inertiaSpin;
+  if (setSens) setSens.value = AppSettings.rotationSensitivity || 0.003;
 }
 
 function saveAndApplySettings() {
@@ -1468,14 +2405,21 @@ function saveAndApplySettings() {
   AppSettings.quality = setQual.value;
   AppSettings.starfield = setStarfield.checked;
   AppSettings.autorotate = setAuto.checked;
+  AppSettings.inertiaSpin = setInertia.checked;
+  if (setSens) AppSettings.rotationSensitivity = parseFloat(setSens.value) || 0.003;
 
   localStorage.setItem("atom_visualizer_settings", JSON.stringify(AppSettings));
 
   // Apply changes visually
   updateColorsFromSettings();
+  applyGraphicsQualitySettings();
 
   const starEntity = scene.getObjectByName("starfield");
   if (starEntity) starEntity.visible = AppSettings.starfield;
+
+  initShootingStars();
+  const ssGroup = scene.getObjectByName("shootingStarsGroup");
+  if (ssGroup) ssGroup.visible = AppSettings.starfield;
 
   // Force rebuild of geometries if quality changed
   sharedGeo = {};
@@ -1506,6 +2450,15 @@ function openReportModal() {
   if (reportText) reportText.focus();
 }
 
+function closeCreditsModal() {
+  if (creditsModal) creditsModal.style.display = "none";
+}
+
+function openCreditsModal() {
+  if (!creditsModal) return;
+  creditsModal.style.display = "flex";
+}
+
 async function sendBugReportEmail() {
   if (!reportText) return;
 
@@ -1526,7 +2479,11 @@ async function sendBugReportEmail() {
     if (reportSendBtn) reportSendBtn.disabled = true;
     setReportStatus("Sending report...");
 
-    const response = await fetch("http://localhost:3000/api/report-bug", {
+    const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+      ? "http://localhost:3000"
+      : "https://your-backend-url.example.com"; // Replace with actual deployed URL
+
+    const response = await fetch(`${API_BASE_URL}/api/report-bug`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1536,7 +2493,7 @@ async function sendBugReportEmail() {
 
     const data = await response.json().catch(() => ({}));
     if (!response.ok || !data.ok) {
-      const errMsg = data.error || "Could not send report. Make sure backend server is running.";
+      const errMsg = data.error || "Could not send report. Make sure backend server is reachable.";
       throw new Error(errMsg);
     }
 
@@ -1599,6 +2556,22 @@ if (reportModal) {
   });
 }
 
+if (creditsBtn) {
+  creditsBtn.addEventListener("click", openCreditsModal);
+}
+
+if (creditsCloseBtn) {
+  creditsCloseBtn.addEventListener("click", closeCreditsModal);
+}
+
+if (creditsModal) {
+  creditsModal.addEventListener("click", (e) => {
+    if (e.target === creditsModal) {
+      closeCreditsModal();
+    }
+  });
+}
+
 
 function handleLoadFromInput() {
   const query = inputEl.value;
@@ -1623,6 +2596,270 @@ if (buttonEl && inputEl) {
     if (e.key === "Enter") {
       handleLoadFromInput();
     }
+  });
+}
+
+// --- Orbital Explorer Logic ---
+
+function renderOrbitalExplorer() {
+  while(explorerGroup.children.length > 0){ 
+      const child = explorerGroup.children[0];
+      if(child.geometry) child.geometry.dispose();
+      if(child.material) child.material.dispose();
+      explorerGroup.remove(child); 
+  }
+
+  const n = parseInt(expN.value);
+  const l = parseInt(expL.value);
+  const m = parseInt(expM.value);
+  const numPoints = parseInt(expPts.value);
+  const pSize = parseFloat(expSize.value);
+  const hexColor = expColor.value;
+
+  let mSign = m < 0 ? "-" : "";
+  let mVal = Math.abs(m);
+  expLabel.innerHTML = `&psi;<sub>${n},${l},${mSign}${mVal}</sub>`;
+
+  const visualScale = 25.0;
+  const shellRadius = n * visualScale * 0.9 + l * visualScale * 0.15;
+
+  const cdfs = buildQuantumCDFs(n, l, m);
+  const rScale = shellRadius / (n * n * 0.5 + l * 0.5 + 0.5);
+
+  // Set zoom cap based on actual point cloud extent, accounting for the
+  // 40° FOV perspective camera. To see extent E centered at origin, the
+  // camera must be at distance ≥ E / tan(20°) ≈ E × 2.75. Use 3.0 margin
+  // so the orbital comfortably fits on screen from any angle.
+  const pointCloudExtent = cdfs.rMax * rScale;
+  const minCameraDist = pointCloudExtent / Math.tan((40 * Math.PI / 180) / 2);
+  // Fit radius is what we jump to when entering quantum, so we never start
+  // "inside" the cloud (white-out) or clipped. The zoom cap stays larger.
+  explorerFitRadius = Math.max(10, minCameraDist * 1.35);
+  maxZoomRadius = Math.max(200, explorerFitRadius * 3.0);
+
+  const positions = [];
+  const colors = [];
+  let placed = 0;
+  let attempts = 0;
+  const maxAttempts = numPoints * 8;
+
+  const baseColor = new THREE.Color(hexColor);
+  const whiteColor = new THREE.Color(0xffffff);
+
+  while (placed < numPoints && attempts < maxAttempts) {
+    attempts++;
+
+    const r = sampleCDF(cdfs.radialCDF, cdfs.rMax);
+    const theta = sampleCDF(cdfs.thetaCDF, Math.PI);
+    const phi = Math.random() * 2 * Math.PI;
+
+    if (m !== 0) {
+      const abm = Math.abs(m);
+      const phiProb = m > 0
+        ? Math.cos(abm * phi) * Math.cos(abm * phi)
+        : Math.sin(abm * phi) * Math.sin(abm * phi);
+      if (Math.random() > phiProb) continue;
+    }
+
+    const rVis = r * rScale;
+    const sinTheta = Math.sin(theta);
+    const x = rVis * sinTheta * Math.cos(phi);
+    const y = rVis * Math.cos(theta);
+    const z = rVis * sinTheta * Math.sin(phi);
+
+    positions.push(x, y, z);
+
+    const distFactor = Math.min(1, rVis / (shellRadius * 1.5));
+    const c = baseColor.clone().lerp(whiteColor, distFactor * 0.2);
+    colors.push(c.r, c.g, c.b);
+    placed++;
+  }
+
+  // Refine fit radius using the *actual sampled* cloud bounds.
+  // This avoids cases where the analytical rMax underestimates the visible cloud
+  // and you start partially inside (white-out) on first switch.
+  let maxRSq = 0;
+  for (let i = 0; i < positions.length; i += 3) {
+    const x = positions[i];
+    const y = positions[i + 1];
+    const z = positions[i + 2];
+    const rSq = x * x + y * y + z * z;
+    if (rSq > maxRSq) maxRSq = rSq;
+  }
+  const sampledExtent = Math.sqrt(maxRSq);
+  if (Number.isFinite(sampledExtent) && sampledExtent > 0) {
+    const fovRad = (40 * Math.PI) / 180;
+    const distToFit = sampledExtent / Math.tan(fovRad / 2);
+    explorerFitRadius = Math.max(explorerFitRadius, distToFit * 1.35);
+    maxZoomRadius = Math.max(maxZoomRadius, explorerFitRadius * 3.0);
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+
+  const material = new THREE.PointsMaterial({
+    size: pSize,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.35,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    sizeAttenuation: true
+  });
+
+  const points = new THREE.Points(geometry, material);
+  explorerGroup.add(points);
+}
+
+function debounceOrbitalRender() {
+  if (explorerRenderTimeout) clearTimeout(explorerRenderTimeout);
+  explorerRenderTimeout = setTimeout(() => {
+    if (isExplorerMode) renderOrbitalExplorer();
+  }, 200);
+}
+
+function enterExplorerMode() {
+  isExplorerMode = true;
+  // Preserve the current normal zoom so we can restore/clamp it later.
+  if (orbitState) lastNormalRadius = orbitState.radius;
+
+  rootGroup.visible = false;
+  explorerGroup.visible = true;
+  expUi.style.display = "block";
+  expLabel.style.display = "flex";
+  
+  const infoPanel = document.getElementById("info-panel");
+  if (infoPanel) infoPanel.style.display = "none";
+  
+  if (quantumModeBtn) {
+    quantumModeBtn.style.borderColor = "rgba(255, 59, 186, 0.6)";
+    quantumModeDot.style.background = "#ff3bba";
+    quantumModeDot.style.boxShadow = "0 0 8px #ff3bba";
+  }
+
+  // Hide starry background in quantum mode
+  const starEntity = scene.getObjectByName("starfield");
+  if (starEntity) starEntity.visible = false;
+  const ssGroup = scene.getObjectByName("shootingStarsGroup");
+  if (ssGroup) ssGroup.visible = false;
+
+  // Clamp slider bounds to valid ranges for current n
+  const n = parseInt(expN.value);
+  expL.max = n - 1;
+  if (parseInt(expL.value) > n - 1) expL.value = n - 1;
+  const l = parseInt(expL.value);
+  expM.min = -l;
+  expM.max = l;
+  if (parseInt(expM.value) < -l) expM.value = -l;
+  if (parseInt(expM.value) > l) expM.value = l;
+  document.getElementById("exp-val-n").textContent = expN.value;
+  document.getElementById("exp-val-l").textContent = expL.value;
+  document.getElementById("exp-val-m").textContent = expM.value;
+
+  renderOrbitalExplorer();
+
+  // Always auto-zoom so the full orbital is visible from the first frame.
+  // Use the computed fit radius (not the zoom cap).
+  if (orbitState) {
+    orbitState.target.set(0, 0, 0);
+    // Reset zoom cap for quantum mode and clamp radius into it.
+    lastQuantumRadius = null;
+    orbitState.radius = Math.min(Math.max(3, explorerFitRadius), maxZoomRadius);
+    orbitState.theta = Math.PI / 4;
+    orbitState.phi = Math.PI / 2;
+    updateCameraFromOrbit();
+  }
+}
+
+function exitExplorerMode() {
+  isExplorerMode = false;
+  rootGroup.visible = true;
+  explorerGroup.visible = false;
+  expUi.style.display = "none";
+  expLabel.style.display = "none";
+  
+  const infoPanel = document.getElementById("info-panel");
+  if (infoPanel) infoPanel.style.display = "block";
+  
+  if (quantumModeBtn) {
+    quantumModeBtn.style.borderColor = "";
+    quantumModeDot.style.background = "#607cff";
+    quantumModeDot.style.boxShadow = "0 0 8px #607cff";
+  }
+
+  // Restore starry background based on user settings
+  const starEntity = scene.getObjectByName("starfield");
+  if (starEntity) starEntity.visible = AppSettings.starfield;
+  const ssGroup = scene.getObjectByName("shootingStarsGroup");
+  if (ssGroup) ssGroup.visible = AppSettings.starfield;
+
+  // Reset camera to normal mode defaults.
+  // Without this, the extreme quantum zoom distance makes the atom appear
+  // tiny/wrong, and the camera orientation from quantum pan/drag persists.
+  if (orbitState) {
+    // Restore normal zoom cap and clamp the current radius into it.
+    // If you were max-zoomed out in quantum, normal mode lands at its own max.
+    maxZoomRadius = NORMAL_MAX_ZOOM_RADIUS;
+    orbitState.radius = Math.max(3, Math.min(maxZoomRadius, lastNormalRadius || orbitState.radius));
+    orbitState.theta = Math.PI / 4;
+    orbitState.phi = Math.PI / 2;
+    updateCameraFromOrbit();
+  }
+
+  // Reset any pan/rotation applied to the explorer group
+  if (explorerGroup) {
+    explorerGroup.position.set(0, 0, 0);
+    explorerGroup.quaternion.identity();
+  }
+
+  // Reset rotation inertia so quantum mode spin doesn't carry over
+  rotateInertia.identity();
+
+  // Clear quantum point cloud from the scene
+  while(explorerGroup.children.length > 0){ 
+      const child = explorerGroup.children[0];
+      if(child.geometry) child.geometry.dispose();
+      if(child.material) child.material.dispose();
+      explorerGroup.remove(child); 
+  }
+}
+
+if (expN && expL && expM) {
+  const updateExplorerBounds = () => {
+    const n = parseInt(expN.value);
+    expL.max = n - 1;
+    if (parseInt(expL.value) > n - 1) expL.value = n - 1;
+    
+    const l = parseInt(expL.value);
+    expM.min = -l;
+    expM.max = l;
+    if (parseInt(expM.value) < -l) expM.value = -l;
+    if (parseInt(expM.value) > l) expM.value = l;
+
+    expValN.textContent = expN.value;
+    expValL.textContent = expL.value;
+    expValM.textContent = expM.value;
+    expValPts.textContent = expPts.value;
+    expValSize.textContent = expSize.value;
+
+    debounceOrbitalRender();
+  };
+
+  expN.addEventListener("input", updateExplorerBounds);
+  expL.addEventListener("input", updateExplorerBounds);
+  expM.addEventListener("input", updateExplorerBounds);
+  expPts.addEventListener("input", updateExplorerBounds);
+  expSize.addEventListener("input", updateExplorerBounds);
+  expColor.addEventListener("input", debounceOrbitalRender);
+  
+  expCloseBtn.addEventListener("click", exitExplorerMode);
+}
+
+if (quantumModeBtn && quantumModeDot) {
+  quantumModeBtn.addEventListener("click", () => {
+    if (isExplorerMode) exitExplorerMode();
+    else enterExplorerMode();
   });
 }
 

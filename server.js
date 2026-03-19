@@ -129,6 +129,17 @@ function createApp(options = {}) {
 
 if (require.main === module) {
   const config = getConfig();
+  if (!hasRequiredOAuthConfig(config)) {
+    console.error("ERROR: Missing required OAuth configuration variables.");
+    console.error("Please ensure the following environment variables are set:");
+    console.error("- REPORT_TO_EMAIL");
+    console.error("- OAUTH_USER");
+    console.error("- OAUTH_CLIENT_ID");
+    console.error("- OAUTH_CLIENT_SECRET");
+    console.error("- OAUTH_REFRESH_TOKEN");
+    process.exit(1);
+  }
+
   const app = createApp({ config });
   app.listen(config.port, () => {
     console.log(`Bug report backend running at http://localhost:${config.port}`);
