@@ -1,6 +1,12 @@
 {
+  "version": 2,
+  "builds": [
+    { "src": "api/report-bug.js", "use": "@vercel/node" },
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "*.js", "use": "@vercel/static" }
+  ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/api/report-bug", "dest": "/api/report-bug.js" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
