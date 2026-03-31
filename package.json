@@ -2,14 +2,13 @@
   "name": "atom-visualizer",
   "version": "1.0.0",
   "private": true,
-  "main": "server.js",
+  "type": "module",
+  "main": "api/report-bug.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "npx vercel dev",
     "test": "node --test tests/report-bug.test.js"
   },
   "dependencies": {
-    "dotenv": "^16.6.1",
-    "express": "^4.21.2",
-    "nodemailer": "^6.10.1"
+    "resend": "^6.10.0"
   }
 }

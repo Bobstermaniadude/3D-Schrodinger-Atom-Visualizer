@@ -2598,11 +2598,7 @@ async function sendBugReportEmail() {
     if (reportSendBtn) reportSendBtn.disabled = true;
     setReportStatus("Sending report...");
 
-    const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-      ? "http://localhost:3000"
-      : "https://your-backend-url.example.com"; // Replace with actual deployed URL
-
-    const response = await fetch(`${API_BASE_URL}/api/report-bug`, {
+    const response = await fetch("/api/report-bug", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
