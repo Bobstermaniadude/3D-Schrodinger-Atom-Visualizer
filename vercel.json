@@ -1,5 +1,6 @@
 {
-  "buildCommand": null,
+  "framework": null,
+  "buildCommand": "echo \"Skipping build\"",
   "outputDirectory": ".",
   "cleanUrls": true
 }
