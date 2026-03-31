@@ -490,8 +490,57 @@
       border-radius: 4px;
     }
 
-    select,
-    .toggle-input {
+    select.toggle-input {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #0d1538;
+      color: #eaefff;
+      border: 1px solid rgba(116, 140, 255, 0.5);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    input[type="checkbox"].toggle-input {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 36px;
+      height: 20px;
+      padding: 0;
+      background: #0d1538;
+      border: 1px solid rgba(116, 140, 255, 0.5);
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input[type="checkbox"].toggle-input::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #5d6790;
+      transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+
+    input[type="checkbox"].toggle-input:checked {
+      background: rgba(116, 140, 255, 0.45);
+      border-color: rgba(116, 140, 255, 0.9);
+    }
+
+    input[type="checkbox"].toggle-input:checked::after {
+      left: 17px;
+      background: #e2e8ff;
+      box-shadow: 0 0 6px rgba(180, 200, 255, 0.8);
+    }
+
+    select {
       -webkit-appearance: none;
       appearance: none;
       background: #0d1538;
