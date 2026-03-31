@@ -233,6 +233,9 @@ let rootGroup;
 let orbitState;
 let sceneLights = {};
 let maxZoomRadius = 200;
+let normalMaxZoomRadius = 200; // cap used in normal (atom) mode
+let explorerMaxZoomRadius = 200; // cap used in orbital explorer mode
+let explorerMinZoomRadius = 3; // min zoom-in distance in orbital explorer mode
 let rotateInertia = new THREE.Quaternion();
 let isRotateDragActive = false;
 let electronAnims = []; // tracked electron animations
@@ -258,6 +261,18 @@ function setStatus(message, isError = false) {
   statusText.style.color = isError ? "#ff9bb5" : "#aab7ff";
 }
 
+function updateCameraFromOrbit() {
+  if (!orbitState || !camera) return;
+  const r = orbitState.radius;
+  const sinPhi = Math.sin(orbitState.phi);
+  camera.position.set(
+    r * sinPhi * Math.cos(orbitState.theta),
+    r * Math.cos(orbitState.phi),
+    r * sinPhi * Math.sin(orbitState.theta)
+  );
+  camera.lookAt(orbitState.target);
+}
+
 function initScene() {
   if (typeof THREE === "undefined") {
     setStatus("Three.js failed to load – check your internet connection (CDN).", true);
@@ -267,7 +282,7 @@ function initScene() {
   const width = rendererContainer.clientWidth || window.innerWidth;
   const height = rendererContainer.clientHeight || window.innerHeight;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(width, height);
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -287,17 +302,6 @@ function initScene() {
     theta: Math.PI / 4,
     phi: Math.PI / 2
   };
-
-  function updateCameraFromOrbit() {
-    const r = orbitState.radius;
-    const sinPhi = Math.sin(orbitState.phi);
-    camera.position.set(
-      r * sinPhi * Math.cos(orbitState.theta),
-      r * Math.cos(orbitState.phi),
-      r * sinPhi * Math.sin(orbitState.theta)
-    );
-    camera.lookAt(orbitState.target);
-  }
 
   updateCameraFromOrbit();
 
@@ -434,7 +438,7 @@ function initScene() {
 
           // By only rotating around World Y and Camera Right, we inherently avoid Z-roll buildup
           rootGroup.quaternion.premultiply(deltaRotation);
-          
+
           if (explorerGroup) {
             explorerGroup.quaternion.premultiply(deltaRotation);
             explorerGroup.quaternion.normalize();
@@ -515,7 +519,9 @@ function initScene() {
       // Prevents edge cases where a large wheel delta can flip direction.
       const zoomFactor = Math.exp(e.deltaY * 0.001);
       orbitState.radius *= zoomFactor;
-      orbitState.radius = Math.max(3, Math.min(maxZoomRadius, orbitState.radius));
+      const cap = isExplorerMode ? explorerMaxZoomRadius : normalMaxZoomRadius;
+      const floor = isExplorerMode ? explorerMinZoomRadius : 3;
+      orbitState.radius = Math.max(floor, Math.min(cap, orbitState.radius));
       updateCameraFromOrbit();
     },
     { passive: false }
@@ -523,6 +529,8 @@ function initScene() {
 
   canvas.addEventListener("dblclick", () => {
     if (!orbitState) return;
+    if (typeof isExplorerMode !== 'undefined' && isExplorerMode) return;
+    
     orbitState.radius = 14;
     orbitState.theta = Math.PI / 4;
     orbitState.phi = Math.PI / 2;
@@ -610,6 +618,7 @@ const clock = new THREE.Clock();
 
 function animate() {
   animationId = requestAnimationFrame(animate);
+  const delta = clock.getDelta();
   const elapsed = clock.getElapsedTime();
 
   if (rootGroup) {
@@ -636,10 +645,10 @@ function animate() {
 
   // Animate shooting stars
   if (AppSettings.starfield && (AppSettings.quality === "high" || AppSettings.quality === "ultra")) {
-    const delta = clock.getDelta() || 0.016; // rough fallback if delta is weird
+    const ssDelta = delta || 0.016; // rough fallback if delta is weird
     for (const ss of shootingStars) {
       if (!ss.active) {
-        ss.timer -= delta;
+        ss.timer -= ssDelta;
         if (ss.timer <= 0) {
           ss.active = true;
           ss.timer = Math.random() * 4 + 2;
@@ -666,7 +675,7 @@ function animate() {
         }
       } else {
         // calculate current step
-        const stepDist = ss.speed * delta;
+        const stepDist = ss.speed * ssDelta;
         const step = ss.dirV.clone().multiplyScalar(stepDist);
         ss.headV.add(step);
         ss.distanceTraveled += stepDist;
@@ -697,7 +706,7 @@ function animate() {
 
         if (ss.distanceTraveled > 110 || ss.mesh.material.opacity <= 0.01 && lifetimeFraction > 0.5) {
           ss.fadingOut = true;
-          ss.mesh.material.opacity -= delta * 2;
+          ss.mesh.material.opacity -= ssDelta * 2;
           if (ss.mesh.material.opacity <= 0) {
             ss.active = false;
             ss.mesh.material.opacity = 0;
@@ -728,6 +737,12 @@ const DEFAULT_SETTINGS = {
     d: "#ffd400",
     f: "#20c96b"
   },
+  visibleOrbitals: {
+    s: true,
+    p: true,
+    d: true,
+    f: true
+  },
   quality: "high", // ultra, high, medium, low, verylow
   starfield: true,
   particleView: false,
@@ -740,7 +755,13 @@ let AppSettings = { ...DEFAULT_SETTINGS };
 try {
   const saved = localStorage.getItem("atom_visualizer_settings");
   if (saved) {
-    AppSettings = { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
+    const parsed = JSON.parse(saved);
+    AppSettings = {
+      ...DEFAULT_SETTINGS,
+      ...parsed,
+      colors: { ...DEFAULT_SETTINGS.colors, ...(parsed.colors || {}) },
+      visibleOrbitals: { ...DEFAULT_SETTINGS.visibleOrbitals, ...(parsed.visibleOrbitals || {}) }
+    };
   }
 } catch (e) { console.error("Could not load settings"); }
 const VALID_QUALITIES = new Set(["ultra", "high", "medium", "low", "verylow"]);
@@ -938,7 +959,7 @@ function createNucleus(Z, visualScale) {
   const mesh = new THREE.Mesh(geo.nucleus, mat);
   mesh.scale.setScalar(radius);
   // Force nucleus to draw early so that orbitals correctly blend over it or are hidden behind it
-  mesh.renderOrder = 1;
+  mesh.renderOrder = -1;
 
   // No glow sphere around nucleus — avoids confusion with orbitals
   return mesh;
@@ -1165,11 +1186,11 @@ function buildQuantumCDFs(n, l, m) {
 
     // Associated Laguerre polynomial via recurrence (his lines 44-47)
     let L = 1, L1 = 1 + a - rho;
-    if (k === 0)      { L = 1; }
+    if (k === 0) { L = 1; }
     else if (k === 1) { L = L1; }
     else {
       for (let j = 2; j <= k; j++) {
-        const Lnew = ((2*j - 1 + a - rho) * L1 - (j - 1 + a) * L) / j;
+        const Lnew = ((2 * j - 1 + a - rho) * L1 - (j - 1 + a) * L) / j;
         L = L1;
         L1 = Lnew;
       }
@@ -1223,7 +1244,7 @@ function buildQuantumCDFs(n, l, m) {
       } else {
         Plm = Pm1m; // will be overwritten
         for (let ll = absM + 2; ll <= l; ll++) {
-          const Pll = ((2*ll - 1) * x * Pm1m - (ll + absM - 1) * Pmm) / (ll - absM);
+          const Pll = ((2 * ll - 1) * x * Pm1m - (ll + absM - 1) * Pmm) / (ll - absM);
           Pmm = Pm1m;
           Pm1m = Pll;
           Plm = Pll;
@@ -1249,9 +1270,9 @@ function gamma(z) {
   z -= 1;
   const g = 7;
   const c = [
-    0.99999999999980993,  676.5203681218851,    -1259.1392167224028,
-    771.32342877765313,   -176.61502916214059,   12.507343278686905,
-    -0.13857109526572012,  9.9843695780195716e-6, 1.5056327351493116e-7
+    0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+    771.32342877765313, -176.61502916214059, 12.507343278686905,
+    -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7
   ];
   let x = c[0];
   for (let i = 1; i < g + 2; i++) x += c[i] / (z + i);
@@ -1463,7 +1484,6 @@ function createPLobe(shellRadius, lobeLength, color, fillRatio) {
   const lobe1 = new THREE.Mesh(lobeGeo, lobeMat);
   lobe1.scale.set(lobeWidth, lobeLength * 0.41, lobeWidth);
   lobe1.position.y = lobeLength * 0.41;
-  lobe1.renderOrder = 2; // Render after nucleus
   group.add(lobe1);
 
   // Negative lobe
@@ -1471,7 +1491,6 @@ function createPLobe(shellRadius, lobeLength, color, fillRatio) {
   lobe2.material.emissiveIntensity = (0.13 + fillRatio * 0.13) * v.emissiveMult;
   lobe2.scale.set(lobeWidth, lobeLength * 0.41, lobeWidth);
   lobe2.position.y = -lobeLength * 0.41;
-  lobe2.renderOrder = 2; // Render after nucleus
   group.add(lobe2);
 
   return group;
@@ -1496,10 +1515,10 @@ function createPOrbital(n, mLocal, shellRadius, color, fillRatio) {
 /**
  * d orbital: four-lobed cloverleaf shapes or torus+dumbbell (dz²).
  * m_l: actual magnetic quantum number (-2 to +2).
- * Standard real spherical harmonic convention:
+ * Standard real spherical harmonic convention (with Chemistry Z = THREE Y):
  *   m_l=0  → d_z²: torus (equatorial belt) + two polar lobes
- *   m_l=±1 → d_xz / d_yz: two lobes in xz / yz plane
- *   m_l=±2 → d_xy / d_(x²-y²): four-lobed cloverleaf in xy plane
+ *   m_l=±1 → d_xz / d_yz: cloverleafs in xz / yz planes
+ *   m_l=±2 → d_xy / d_(x²-y²): cloverleafs in xy plane
  */
 function createDOrbital(n, m_l, shellRadius, color, fillRatio) {
   const group = new THREE.Group();
@@ -1524,9 +1543,10 @@ function createDOrbital(n, m_l, shellRadius, color, fillRatio) {
   const lobeOffset = shellRadius * 0.45;
 
   if (m_l === 0) {
-    // d_z²: torus (equatorial belt) + two polar lobes along z-axis
+    // d_z²: torus + two polar lobes along Chemistry Z-axis (THREE Y-axis)
     const torusGeo = new THREE.TorusGeometry(shellRadius * 0.38, shellRadius * 0.12, sg.torusSegments.radial, sg.torusSegments.tubular);
     const torus = new THREE.Mesh(torusGeo, lobeMat);
+    torus.rotation.x = Math.PI / 2; // Lie flat in Chemistry XY (THREE XZ) plane
     group.add(torus);
 
     const topLobe = new THREE.Mesh(lobeGeo, lobeMat);
@@ -1538,46 +1558,45 @@ function createDOrbital(n, m_l, shellRadius, color, fillRatio) {
     botLobe.scale.set(lobeSize * 0.7, lobeSize * 1.2, lobeSize * 0.7);
     botLobe.position.y = -lobeOffset;
     group.add(botLobe);
-  } else if (Math.abs(m_l) === 1) {
-    // d_xz (m_l=+1) or d_yz (m_l=-1): two lobes
-    // Default lobe axis is y; rotate to place lobes in the correct plane
+  } else {
+    // 4-lobed cloverleafs.
     const lobeMatNeg = lobeMat.clone();
     lobeMatNeg.emissiveIntensity = (0.1 + fillRatio * 0.1) * v.emissiveMult;
 
-    const topLobe = new THREE.Mesh(lobeGeo, lobeMat);
-    topLobe.scale.set(lobeSize * 0.8, lobeSize * 1.1, lobeSize * 0.8);
-    topLobe.position.y = lobeOffset;
-    group.add(topLobe);
-
-    const botLobe = new THREE.Mesh(lobeGeo, lobeMatNeg);
-    botLobe.scale.set(lobeSize * 0.8, lobeSize * 1.1, lobeSize * 0.8);
-    botLobe.position.y = -lobeOffset;
-    group.add(botLobe);
-
-    if (m_l === 1) {
-      // d_xz: lobes in xz plane — rotate around y-axis
-      group.rotation.y = Math.PI / 2;
-    } else {
-      // d_yz: lobes in yz plane — rotate around x-axis
-      group.rotation.x = Math.PI / 2;
-    }
-  } else {
-    // m_l = ±2: d_xy (m_l=+2) or d_(x²-y²) (m_l=-2)
-    // Four-lobed cloverleaf in xy plane
+    const cloverGroup = new THREE.Group();
     const angles = [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2];
-    for (const angle of angles) {
-      const lobe = new THREE.Mesh(lobeGeo, lobeMat);
+    
+    for (let i = 0; i < 4; i++) {
+      const isPositivePhase = (i === 0 || i === 2);
+      const mat = isPositivePhase ? lobeMat : lobeMatNeg;
+      const lobe = new THREE.Mesh(lobeGeo, mat);
       lobe.scale.setScalar(lobeSize);
-      lobe.position.x = lobeOffset * Math.cos(angle);
-      lobe.position.z = lobeOffset * Math.sin(angle);
-      group.add(lobe);
+      
+      const angle = angles[i];
+      // Offset by PI/4 if the lobes lie between the axes
+      const offset = (m_l === 2) ? 0 : Math.PI / 4; 
+      const A = Math.cos(angle + offset) * lobeOffset;
+      const B = Math.sin(angle + offset) * lobeOffset;
+      
+      // Mapping Chemistry coordinates to THREE coordinates:
+      // Chem Z = Three Y, Chem X = Three X, Chem Y = Three Z
+      if (m_l === 1) { 
+        // d_xz: lies in Chem XZ plane => Three XY plane
+        lobe.position.x = A;
+        lobe.position.y = B;
+      } else if (m_l === -1) {
+        // d_yz: lies in Chem YZ plane => Three ZY plane
+        lobe.position.z = A; // Chem Y
+        lobe.position.y = B; // Chem Z
+      } else if (m_l === 2 || m_l === -2) {
+        // d_xy and d_(x²-y²): lie in Chem XY plane => Three XZ plane
+        lobe.position.x = A; // Chem X
+        lobe.position.z = B; // Chem Y
+      }
+      
+      cloverGroup.add(lobe);
     }
-
-    if (m_l === 2) {
-      // d_xy: cloverleaf rotated 45° from axes
-      group.rotation.y = Math.PI / 4;
-    }
-    // m_l=-2 → d_(x²-y²): cloverleaf aligned with axes (default, no rotation)
+    group.add(cloverGroup);
   }
 
   return group;
@@ -1586,11 +1605,6 @@ function createDOrbital(n, m_l, shellRadius, color, fillRatio) {
 /**
  * f orbital: multi-lobed shapes following real spherical harmonics (l=3).
  * m_l: actual magnetic quantum number (-3 to +3).
- * Standard real spherical harmonic convention:
- *   m_l=0   → fz³: 2 polar lobes + 6 equatorial (3 planar nodes)
- *   m_l=±1  → fxz²/fyz²: 4 lobes in xz/yz plane
- *   m_l=±2  → fxyz/f(x²-y²)z: 4 lobes rotated 45° around z
- *   m_l=±3  → fx³/fy³: 4 lobes in xy-oriented planes
  */
 function createFOrbital(n, m_l, shellRadius, color, fillRatio) {
   const group = new THREE.Group();
@@ -1613,75 +1627,100 @@ function createFOrbital(n, m_l, shellRadius, color, fillRatio) {
 
   const lobeSize = shellRadius * 0.22;
   const lobeOffset = shellRadius * 0.45;
+  const absM = Math.abs(m_l);
+  
+  // Negative phase material
+  const negLobeMat = lobeMat.clone();
+  negLobeMat.emissiveIntensity = (0.08 + fillRatio * 0.08) * v.emissiveMult;
+
+  // Helper macro to add a lobe with proper Three.js coords (Chem X,Y,Z -> Three X,Z,Y)
+  function addLobe(chemX, chemY, chemZ, scale, mat) {
+    const lobe = new THREE.Mesh(lobeGeo, mat);
+    lobe.scale.setScalar(scale);
+    lobe.position.set(chemX, chemZ, chemY); // Chem Z maps to Three Y, Chem Y maps to Three Z
+    group.add(lobe);
+  }
 
   if (m_l === 0) {
-    // fz³ type: 2 large polar lobes + 6 smaller equatorial lobes
-    // (axial symmetry with 3 planar nodes at specific angles)
-    const topLobe = new THREE.Mesh(lobeGeo, lobeMat);
-    topLobe.scale.setScalar(lobeSize * 1.1);
-    topLobe.position.y = lobeOffset * 1.1;
-    group.add(topLobe);
+    // f_z³: 2 large polar lobes + 6 smaller equatorial lobes
+    addLobe(0, 0, lobeOffset * 1.1, lobeSize * 1.1, lobeMat);        // Top pole
+    addLobe(0, 0, -lobeOffset * 1.1, lobeSize * 1.1, negLobeMat);    // Bottom pole (opposite phase)
 
-    const botLobe = new THREE.Mesh(lobeGeo, lobeMat);
-    botLobe.scale.setScalar(lobeSize * 1.1);
-    botLobe.position.y = -lobeOffset * 1.1;
-    group.add(botLobe);
-
+    // 6 equatorial lobes (Chem Z = 0, meaning Three Y = 0)
     for (let i = 0; i < 6; i++) {
-      const angle = (i / 6) * Math.PI * 2;
-      const lobe = new THREE.Mesh(lobeGeo, lobeMat);
-      lobe.scale.setScalar(lobeSize * 0.8);
-      lobe.position.x = lobeOffset * 0.7 * Math.cos(angle);
-      lobe.position.z = lobeOffset * 0.7 * Math.sin(angle);
-      group.add(lobe);
+        const angle = (i / 6) * Math.PI * 2;
+        addLobe(
+            lobeOffset * 0.7 * Math.cos(angle), // Chem X
+            lobeOffset * 0.7 * Math.sin(angle), // Chem Y
+            0,                                  // Chem Z
+            lobeSize * 0.8,
+            (i % 2 === 0) ? lobeMat : negLobeMat
+        );
     }
-  } else if (Math.abs(m_l) <= 2) {
-    // m_l = ±1: fxz² / fyz² — 4 lobes in xz or yz plane
-    // m_l = ±2: fxyz / f(x²-y²)z — 4 lobes at 45° to axes
-    // Both are 4-lobe structures with different plane orientations
-    const d = lobeOffset * 0.65;
-    const posLobe = new THREE.Mesh(lobeGeo, lobeMat);
-    posLobe.scale.setScalar(lobeSize);
-    posLobe.position.set(d, d, 0);
-    group.add(posLobe);
+  } else if (absM === 1) {
+    // f_xz² (m_l=+1) / f_yz² (m_l=-1): 2 polar lobes, 4 equatorial lobes in XZ/YZ plane
+    const chemPlaneAngle = m_l === 1 ? 0 : Math.PI / 2; // +1 is XZ plane, -1 is YZ plane
+    
+    // Polar lobes along Chem Z-axis
+    addLobe(0, 0, lobeOffset * 1.05, lobeSize * 0.85, lobeMat);
+    addLobe(0, 0, -lobeOffset * 1.05, lobeSize * 0.85, negLobeMat);
+    
+    // Equatorial lobes in the respective plane (Chem Z = +/- offset)
+    for (let i = 0; i < 2; i++) {
+        const dir = i === 0 ? 1 : -1;
+        const R = lobeOffset * 0.65;
+        const Z = lobeOffset * 0.35 * dir;
+        
+        // Positive chem X/Y side
+        addLobe(R * Math.cos(chemPlaneAngle), R * Math.sin(chemPlaneAngle), Z, lobeSize * 0.75, dir > 0 ? negLobeMat : lobeMat);
+        // Negative chem X/Y side
+        addLobe(-R * Math.cos(chemPlaneAngle), -R * Math.sin(chemPlaneAngle), Z, lobeSize * 0.75, dir > 0 ? lobeMat : negLobeMat);
+    }
+  } else if (absM === 2) {
+    // f_xyz (m_l=+2) / f_z(x²−y²) (m_l=-2): 4 lobes above, 4 below equator
+    const zOff = lobeOffset * 0.42;
 
-    const negLobe = new THREE.Mesh(lobeGeo, lobeMat.clone());
-    negLobe.scale.setScalar(lobeSize);
-    negLobe.position.set(-d, -d, 0);
-    group.add(negLobe);
+    for (let i = 0; i < 4; i++) {
+      const baseAngle = (i * Math.PI) / 2;
+      const angle = m_l === 2 ? baseAngle + Math.PI / 4 : baseAngle;
+      
+      const trigVal = m_l === 2 ? Math.sin(2 * angle) : Math.cos(2 * angle);
+      const isAzimuthalPos = trigVal > 0;
 
-    const posLobe2 = new THREE.Mesh(lobeGeo, lobeMat.clone());
-    posLobe2.scale.setScalar(lobeSize);
-    posLobe2.position.set(-d, d, 0);
-    group.add(posLobe2);
+      // Top lobe (above equator, Chem Z > 0)
+      addLobe(
+          lobeOffset * 0.55 * Math.cos(angle),
+          lobeOffset * 0.55 * Math.sin(angle),
+          zOff,
+          lobeSize * 0.7,
+          isAzimuthalPos ? lobeMat : negLobeMat
+      );
 
-    const negLobe2 = new THREE.Mesh(lobeGeo, lobeMat.clone());
-    negLobe2.scale.setScalar(lobeSize);
-    negLobe2.position.set(d, -d, 0);
-    group.add(negLobe2);
-
-    if (Math.abs(m_l) === 1) {
-      // fxz² (m_l=+1) or fyz² (m_l=-1): in xz or yz plane
-      if (m_l === -1) group.rotation.y = Math.PI / 2;
-    } else {
-      // fxyz (m_l=+2) or f(x²-y²)z (m_l=-2): rotated 45° around z
-      group.rotation.z = Math.PI / 4;
-      if (m_l === -2) group.rotation.y = Math.PI / 2;
+      // Bottom lobe (below equator, Chem Z < 0) - reversed phase
+      addLobe(
+          lobeOffset * 0.55 * Math.cos(angle),
+          lobeOffset * 0.55 * Math.sin(angle),
+          -zOff,
+          lobeSize * 0.7,
+          isAzimuthalPos ? negLobeMat : lobeMat
+      );
     }
   } else {
-    // m_l = ±3: fx³ / fy³ — 4 lobes in rotated planes
-    const d = lobeOffset * 0.6;
-    const offsets = [
-      [1, 1, 0], [-1, -1, 0], [1, -1, 0], [-1, 1, 0]
-    ];
-    for (const off of offsets) {
-      const lobe = new THREE.Mesh(lobeGeo, lobeMat.clone());
-      lobe.scale.setScalar(lobeSize);
-      lobe.position.set(off[0] * d, off[1] * d, off[2] * d);
-      group.add(lobe);
+    // f_x³ (m_l=+3) / f_y³ (m_l=-3): 6 lobes in the Chem XY plane
+    for (let i = 0; i < 6; i++) {
+      const baseAngle = (i / 6) * Math.PI * 2;
+      const angle = m_l > 0 ? baseAngle + Math.PI / 6 : baseAngle;
+      
+      const trigVal = m_l > 0 ? Math.sin(3 * angle) : Math.cos(3 * angle);
+      
+      addLobe(
+          lobeOffset * 0.65 * Math.cos(angle),
+          lobeOffset * 0.65 * Math.sin(angle),
+          0, // Chem Z = 0 (Equatorial plane)
+          lobeSize * 0.75,
+          trigVal > 0 ? lobeMat : negLobeMat
+      );
     }
-    // Rotate 60° around z for m_l=+3, 60°+90° for m_l=-3
-    group.rotation.z = (m_l > 0) ? Math.PI / 3 : Math.PI / 3 + Math.PI / 2;
   }
 
   return group;
@@ -1830,8 +1869,16 @@ function buildAtom(element) {
       remaining--;
     }
 
-    // Base shell radius scales with n
-    const shellRadius = n * visualScale * 0.9 + l * visualScale * 0.15;
+    // Base shell radius scales with n. Keep p slightly inside same-n s shell
+    // so rotations never make p appear to protrude beyond the enclosing s.
+    const baseShellRadius = n * visualScale * 0.9;
+    const lRadiusMultipliers = {
+      0: 1.0,  // s
+      1: 0.9,  // p (kept smaller than same-n s)
+      2: 1.05, // d
+      3: 1.1   // f
+    };
+    const shellRadius = baseShellRadius * (lRadiusMultipliers[l] ?? 1.0);
 
     for (let mIdx = 0; mIdx < mCount; mIdx++) {
       if (occupancies[mIdx] === 0) continue;
@@ -1879,36 +1926,36 @@ function buildAtom(element) {
       for (let e = 0; e < numElectrons; e++) {
         const eMesh = createElectronMesh();
 
-          // --- Spin arrow sprite ---
-          const isSpinUp = e === 0;
-          const spinArrow = createSpinArrowSprite(isSpinUp);
-          spinArrow.position.set(0.15, 0.2, 0);
-          eMesh.add(spinArrow);
+        // --- Spin arrow sprite ---
+        const isSpinUp = e === 0;
+        const spinArrow = createSpinArrowSprite(isSpinUp);
+        spinArrow.position.set(0.15, 0.2, 0);
+        eMesh.add(spinArrow);
 
-          rootGroup.add(eMesh);
+        rootGroup.add(eMesh);
 
-          const phase = (e / numElectrons) * Math.PI * 2 + orbitalIndex * 0.7;
-          const speed = 0.5 + 0.15 / Math.max(1, n * 0.5);
+        const phase = (e / numElectrons) * Math.PI * 2 + orbitalIndex * 0.7;
+        const speed = 0.5 + 0.15 / Math.max(1, n * 0.5);
 
-          let pathFn;
-          if (l === 0) {
-            const tiltX = orbitalIndex * 1.2 + e * 0.5;
-            const tiltZ = orbitalIndex * 0.8 + e * 0.3;
-            pathFn = sOrbitalPath(shellRadius * 0.85, tiltX, tiltZ);
-          } else if (l === 1) {
-            const axes = ["x", "y", "z"];
-            pathFn = pOrbitalPath(shellRadius * 1.1, axes[mIdx] || "y");
-          } else {
-            const tiltX = mIdx * 0.5 + e * Math.PI;
-            const tiltY = mIdx * 0.7 + orbitalIndex * 0.3;
-            const tiltZ = e * 0.4;
-            pathFn = generalOrbitalPath(shellRadius * 0.8, tiltX, tiltY, tiltZ);
-          }
-
-          const animator = new ElectronAnimator(eMesh, pathFn, speed, phase);
-          electronAnims.push(animator);
-          orbEntry.electrons.push(eMesh);
+        let pathFn;
+        if (l === 0) {
+          const tiltX = orbitalIndex * 1.2 + e * 0.5;
+          const tiltZ = orbitalIndex * 0.8 + e * 0.3;
+          pathFn = sOrbitalPath(shellRadius * 0.85, tiltX, tiltZ);
+        } else if (l === 1) {
+          const axes = ["x", "y", "z"];
+          pathFn = pOrbitalPath(shellRadius * 1.1, axes[mIdx] || "y");
+        } else {
+          const tiltX = mIdx * 0.5 + e * Math.PI;
+          const tiltY = mIdx * 0.7 + orbitalIndex * 0.3;
+          const tiltZ = e * 0.4;
+          pathFn = generalOrbitalPath(shellRadius * 0.8, tiltX, tiltY, tiltZ);
         }
+
+        const animator = new ElectronAnimator(eMesh, pathFn, speed, phase);
+        electronAnims.push(animator);
+        orbEntry.electrons.push(eMesh);
+      }
 
       orbitalRegistry.push(orbEntry);
       orbitalIndex++;
@@ -1920,8 +1967,10 @@ function buildAtom(element) {
   const maxLForMaxN = Math.min(maxN - 1, 3);
   const outermostShellRadius = maxN * visualScale * 0.9 + maxLForMaxN * visualScale * 0.15;
   const halfFov = (40 * Math.PI / 180) / 2;
-  maxZoomRadius = Math.max(200, (outermostShellRadius / Math.tan(halfFov)) * 1.2);
+  normalMaxZoomRadius = Math.max(200, (outermostShellRadius / Math.tan(halfFov)) * 1.2);
+  if (!isExplorerMode) maxZoomRadius = normalMaxZoomRadius;
 
+  applyOrbitalVisibilityFilters();
   updateInfoPanel(element, filled);
 }
 
@@ -1940,6 +1989,7 @@ function findClosestOrbitalToRay() {
   const clickTargets = [];
   const meshToRegistryIndex = new Map();
   for (let i = 0; i < orbitalRegistry.length; i++) {
+    if (!orbitalRegistry[i].shape.visible) continue;
     orbitalRegistry[i].shape.traverse((obj) => {
       // Exclude wireframe rings and non-meshes
       if (obj.isMesh && obj.geometry.type !== "RingGeometry") {
@@ -2080,10 +2130,7 @@ function focusOrbital(index) {
     document.getElementById("focus-radial").textContent = (entry.n - entry.l - 1);
     document.getElementById("focus-angular").textContent = entry.l;
 
-    // Use absolute value for negative m in subscript
-    let mlSub = entry.ml < 0 ? `Minus${Math.abs(entry.ml)}` : entry.ml;
-    // Replace "Minus" with a visually distinct minus subscript logic or just use unicode if possible.
-    const subMap = { "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "-": "₋" };
+    const subMap = { "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅", "6": "₆", "7": "₇", "8": "₈", "9": "₉", "-": "₋" };
     const toSub = (str) => String(str).split('').map(c => subMap[c] || c).join('');
 
     document.getElementById("focus-wavefunction").textContent = `ψ${toSub(entry.n)}${toSub(entry.l)}${toSub(entry.ml)}`;
@@ -2141,6 +2188,54 @@ function unfocusOrbitals() {
     restoreOrbitalOpacity(i);
     for (const eMesh of orbitalRegistry[i].electrons) {
       eMesh.visible = true;
+    }
+  }
+}
+
+function isOrbitalTypeVisible(type) {
+  return AppSettings.visibleOrbitals?.[type] !== false;
+}
+
+function applyOrbitalVisibilityFilters() {
+  if (!orbitalRegistry || orbitalRegistry.length === 0) return;
+
+  if (
+    focusedOrbitalIndex >= 0 &&
+    orbitalRegistry[focusedOrbitalIndex] &&
+    !isOrbitalTypeVisible(orbitalRegistry[focusedOrbitalIndex].type)
+  ) {
+    unfocusOrbitals();
+  }
+
+  if (
+    hoveredOrbitalIndex >= 0 &&
+    orbitalRegistry[hoveredOrbitalIndex] &&
+    !isOrbitalTypeVisible(orbitalRegistry[hoveredOrbitalIndex].type)
+  ) {
+    restoreOrbitalOpacity(hoveredOrbitalIndex);
+    hoveredOrbitalIndex = -1;
+    if (rendererContainer) rendererContainer.style.cursor = "default";
+  }
+
+  const hasFocus = focusedOrbitalIndex >= 0 && orbitalRegistry[focusedOrbitalIndex];
+  for (let i = 0; i < orbitalRegistry.length; i++) {
+    const entry = orbitalRegistry[i];
+    const visible = isOrbitalTypeVisible(entry.type);
+    entry.shape.visible = visible;
+
+    if (!visible) {
+      for (const eMesh of entry.electrons) eMesh.visible = false;
+      continue;
+    }
+
+    if (hasFocus) {
+      for (const eMesh of entry.electrons) {
+        eMesh.visible = i === focusedOrbitalIndex;
+      }
+    } else {
+      for (const eMesh of entry.electrons) {
+        eMesh.visible = true;
+      }
     }
   }
 }
@@ -2373,6 +2468,10 @@ const setStarfield = document.getElementById("set-starfield");
 const setAuto = document.getElementById("set-autorotate");
 const setInertia = document.getElementById("set-inertia");
 const setSens = document.getElementById("set-sensitivity");
+const orbShowS = document.getElementById("orb-show-s");
+const orbShowP = document.getElementById("orb-show-p");
+const orbShowD = document.getElementById("orb-show-d");
+const orbShowF = document.getElementById("orb-show-f");
 
 // Report issues elements
 const reportBtn = document.getElementById("report-button");
@@ -2431,6 +2530,26 @@ function saveAndApplySettings() {
     // If empty (default load), just build H
     buildAtom(ELEMENTS[0]);
   }
+}
+
+function populateOrbitalFilterUI() {
+  if (orbShowS) orbShowS.checked = isOrbitalTypeVisible("s");
+  if (orbShowP) orbShowP.checked = isOrbitalTypeVisible("p");
+  if (orbShowD) orbShowD.checked = isOrbitalTypeVisible("d");
+  if (orbShowF) orbShowF.checked = isOrbitalTypeVisible("f");
+}
+
+function saveOrbitalFilterSettings() {
+  if (!AppSettings.visibleOrbitals || typeof AppSettings.visibleOrbitals !== "object") {
+    AppSettings.visibleOrbitals = { ...DEFAULT_SETTINGS.visibleOrbitals };
+  }
+  if (orbShowS) AppSettings.visibleOrbitals.s = orbShowS.checked;
+  if (orbShowP) AppSettings.visibleOrbitals.p = orbShowP.checked;
+  if (orbShowD) AppSettings.visibleOrbitals.d = orbShowD.checked;
+  if (orbShowF) AppSettings.visibleOrbitals.f = orbShowF.checked;
+
+  localStorage.setItem("atom_visualizer_settings", JSON.stringify(AppSettings));
+  applyOrbitalVisibilityFilters();
 }
 
 function setReportStatus(message, isError = false) {
@@ -2507,6 +2626,23 @@ async function sendBugReportEmail() {
     if (reportSendBtn) reportSendBtn.disabled = false;
   }
 }
+// --- Screenshot export ---
+
+function exportScreenshot() {
+  if (!renderer) return;
+  renderer.domElement.toBlob((blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const element = inputEl?.value?.trim() || "atom";
+    a.download = `${element}-screenshot.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, "image/png");
+}
+
 // Modal wiring
 if (settingsBtn) {
   settingsBtn.addEventListener("click", () => {
@@ -2524,9 +2660,26 @@ if (setCloseBtn) {
 
 if (setResetBtn) {
   setResetBtn.addEventListener("click", () => {
-    AppSettings = { ...DEFAULT_SETTINGS, colors: { ...DEFAULT_SETTINGS.colors } };
+    AppSettings = {
+      ...DEFAULT_SETTINGS,
+      colors: { ...DEFAULT_SETTINGS.colors },
+      visibleOrbitals: { ...DEFAULT_SETTINGS.visibleOrbitals }
+    };
     populateSettingsUI();
+    populateOrbitalFilterUI();
+    applyOrbitalVisibilityFilters();
   });
+}
+if (orbShowS && orbShowP && orbShowD && orbShowF) {
+  const onOrbitalFilterChanged = () => saveOrbitalFilterSettings();
+  orbShowS.addEventListener("change", onOrbitalFilterChanged);
+  orbShowP.addEventListener("change", onOrbitalFilterChanged);
+  orbShowD.addEventListener("change", onOrbitalFilterChanged);
+  orbShowF.addEventListener("change", onOrbitalFilterChanged);
+}
+const screenshotBtn = document.getElementById("screenshot-button");
+if (screenshotBtn) {
+  screenshotBtn.addEventListener("click", exportScreenshot);
 }
 if (reportBtn) {
   reportBtn.addEventListener("click", openReportModal);
@@ -2587,7 +2740,16 @@ function handleLoadFromInput() {
   inputEl.style.borderColor = "rgba(116, 140, 255, 0.9)";
   inputEl.style.boxShadow =
     "0 0 0 1px rgba(114, 144, 255, 0.9), 0 0 24px rgba(84, 134, 255, 0.7)";
-  buildAtom(element);
+
+  // Show loading shimmer before heavy computation
+  const loadingOverlay = document.getElementById("loading-overlay");
+  if (loadingOverlay) loadingOverlay.style.display = "flex";
+
+  // Yield to browser to paint the shimmer, then compute
+  setTimeout(() => {
+    buildAtom(element);
+    if (loadingOverlay) loadingOverlay.style.display = "none";
+  }, 0);
 }
 
 if (buttonEl && inputEl) {
@@ -2602,19 +2764,37 @@ if (buttonEl && inputEl) {
 // --- Orbital Explorer Logic ---
 
 function renderOrbitalExplorer() {
-  while(explorerGroup.children.length > 0){ 
-      const child = explorerGroup.children[0];
-      if(child.geometry) child.geometry.dispose();
-      if(child.material) child.material.dispose();
-      explorerGroup.remove(child); 
+  while (explorerGroup.children.length > 0) {
+    const child = explorerGroup.children[0];
+    if (child.geometry) child.geometry.dispose();
+    if (child.material) child.material.dispose();
+    explorerGroup.remove(child);
   }
 
-  const n = parseInt(expN.value);
-  const l = parseInt(expL.value);
-  const m = parseInt(expM.value);
-  const numPoints = parseInt(expPts.value);
-  const pSize = parseFloat(expSize.value);
-  const hexColor = expColor.value;
+  // Sanitize slider/state values so we never end up with NaN sampling or an empty cloud.
+  let n = parseInt(expN.value);
+  let l = parseInt(expL.value);
+  let m = parseInt(expM.value);
+  let numPoints = parseInt(expPts.value);
+  let pSize = parseFloat(expSize.value);
+  let hexColor = expColor.value;
+
+  if (!Number.isFinite(n)) n = 1;
+  n = Math.max(1, Math.min(50, Math.trunc(n)));
+
+  if (!Number.isFinite(l)) l = 0;
+  l = Math.max(0, Math.min(n - 1, Math.trunc(l)));
+
+  if (!Number.isFinite(m)) m = 0;
+  m = Math.max(-l, Math.min(l, Math.trunc(m)));
+
+  if (!Number.isFinite(numPoints)) numPoints = 100000;
+  numPoints = Math.max(1000, Math.min(300000, Math.trunc(numPoints)));
+
+  if (!Number.isFinite(pSize)) pSize = 2.0;
+  pSize = Math.max(0.05, Math.min(10.0, pSize));
+
+  if (typeof hexColor !== "string" || !hexColor.trim()) hexColor = "#ffffff";
 
   let mSign = m < 0 ? "-" : "";
   let mVal = Math.abs(m);
@@ -2624,18 +2804,23 @@ function renderOrbitalExplorer() {
   const shellRadius = n * visualScale * 0.9 + l * visualScale * 0.15;
 
   const cdfs = buildQuantumCDFs(n, l, m);
-  const rScale = shellRadius / (n * n * 0.5 + l * 0.5 + 0.5);
+  const rScale = shellRadius / 20;
 
   // Set zoom cap based on actual point cloud extent, accounting for the
   // 40° FOV perspective camera. To see extent E centered at origin, the
   // camera must be at distance ≥ E / tan(20°) ≈ E × 2.75. Use 3.0 margin
   // so the orbital comfortably fits on screen from any angle.
+  // Dynamic Zoom: For n >= 3, zoom in closer to reveal internal radial nodes 
+  // instead of framing the massive probability tails.
+  const zoomFactor = n > 2 ? Math.max(0.35, 1.35 - (n - 2) * 0.25) : 1.35;
   const pointCloudExtent = cdfs.rMax * rScale;
   const minCameraDist = pointCloudExtent / Math.tan((40 * Math.PI / 180) / 2);
   // Fit radius is what we jump to when entering quantum, so we never start
   // "inside" the cloud (white-out) or clipped. The zoom cap stays larger.
-  explorerFitRadius = Math.max(10, minCameraDist * 1.35);
-  maxZoomRadius = Math.max(200, explorerFitRadius * 3.0);
+  explorerFitRadius = Math.max(10, minCameraDist * zoomFactor);
+  explorerMaxZoomRadius = explorerFitRadius * Math.max(5, 8 - explorerFitRadius * 0.01);
+  explorerMinZoomRadius = Math.max(3, pointCloudExtent * 0.2);
+  if (isExplorerMode) maxZoomRadius = explorerMaxZoomRadius;
 
   const positions = [];
   const colors = [];
@@ -2678,6 +2863,30 @@ function renderOrbitalExplorer() {
   // Refine fit radius using the *actual sampled* cloud bounds.
   // This avoids cases where the analytical rMax underestimates the visible cloud
   // and you start partially inside (white-out) on first switch.
+  if (positions.length === 0) {
+    // Fallback: generate a small, visible cloud near the shell radius.
+    // Prevents "empty explorer" when sampling is overly restrictive.
+    const fallbackCount = Math.min(numPoints, 5000);
+    for (let i = 0; i < fallbackCount; i++) {
+      // Uniform direction on sphere.
+      const u = Math.random();
+      const theta = Math.acos(1 - 2 * u);
+      const phi = Math.random() * 2 * Math.PI;
+      const rVis = shellRadius * 0.65 * Math.pow(Math.random(), 0.6);
+
+      const sinTheta = Math.sin(theta);
+      const x = rVis * sinTheta * Math.cos(phi);
+      const y = rVis * Math.cos(theta);
+      const z = rVis * sinTheta * Math.sin(phi);
+
+      positions.push(x, y, z);
+
+      const distFactor = Math.min(1, rVis / (shellRadius * 1.5));
+      const c = baseColor.clone().lerp(whiteColor, distFactor * 0.2);
+      colors.push(c.r, c.g, c.b);
+    }
+  }
+
   let maxRSq = 0;
   for (let i = 0; i < positions.length; i += 3) {
     const x = positions[i];
@@ -2690,8 +2899,10 @@ function renderOrbitalExplorer() {
   if (Number.isFinite(sampledExtent) && sampledExtent > 0) {
     const fovRad = (40 * Math.PI) / 180;
     const distToFit = sampledExtent / Math.tan(fovRad / 2);
-    explorerFitRadius = Math.max(explorerFitRadius, distToFit * 1.35);
-    maxZoomRadius = Math.max(maxZoomRadius, explorerFitRadius * 3.0);
+    explorerFitRadius = Math.max(explorerFitRadius, distToFit * zoomFactor);
+    explorerMaxZoomRadius = Math.max(explorerMaxZoomRadius, explorerFitRadius * Math.max(5, 8 - explorerFitRadius * 0.01));
+    explorerMinZoomRadius = Math.max(explorerMinZoomRadius, sampledExtent * 0.2);
+    if (isExplorerMode) maxZoomRadius = explorerMaxZoomRadius;
   }
 
   const geometry = new THREE.BufferGeometry();
@@ -2709,13 +2920,30 @@ function renderOrbitalExplorer() {
   });
 
   const points = new THREE.Points(geometry, material);
+  geometry.computeBoundingSphere();
+  points.frustumCulled = false;
+  explorerGroup.frustumCulled = false;
   explorerGroup.add(points);
 }
 
 function debounceOrbitalRender() {
   if (explorerRenderTimeout) clearTimeout(explorerRenderTimeout);
   explorerRenderTimeout = setTimeout(() => {
-    if (isExplorerMode) renderOrbitalExplorer();
+    if (isExplorerMode) {
+      renderOrbitalExplorer();
+      // After rendering, the new orbital may have different zoom limits.
+      // Update the zoom cap but don't reset the camera — let the user see
+      // the orbital's true scale change and zoom manually.
+      if (orbitState) {
+        maxZoomRadius = explorerMaxZoomRadius;
+        // Only clamp down if the new cap is smaller than current radius
+        // (e.g. switching from a large orbital to a smaller one).
+        if (orbitState.radius > explorerMaxZoomRadius) {
+          orbitState.radius = explorerMaxZoomRadius;
+          updateCameraFromOrbit();
+        }
+      }
+    }
   }, 200);
 }
 
@@ -2726,12 +2954,19 @@ function enterExplorerMode() {
 
   rootGroup.visible = false;
   explorerGroup.visible = true;
+  // Explorer group can get panned during normal mode (even while hidden),
+  // so always re-center it before rendering/zooming.
+  explorerGroup.position.set(0, 0, 0);
+  explorerGroup.quaternion.identity();
   expUi.style.display = "block";
   expLabel.style.display = "flex";
-  
+
   const infoPanel = document.getElementById("info-panel");
   if (infoPanel) infoPanel.style.display = "none";
-  
+
+  const orbitalTogglesPanel = document.getElementById("orbital-toggles-panel");
+  if (orbitalTogglesPanel) orbitalTogglesPanel.style.display = "none";
+
   if (quantumModeBtn) {
     quantumModeBtn.style.borderColor = "rgba(255, 59, 186, 0.6)";
     quantumModeDot.style.background = "#ff3bba";
@@ -2765,7 +3000,8 @@ function enterExplorerMode() {
     orbitState.target.set(0, 0, 0);
     // Reset zoom cap for quantum mode and clamp radius into it.
     lastQuantumRadius = null;
-    orbitState.radius = Math.min(Math.max(3, explorerFitRadius), maxZoomRadius);
+    maxZoomRadius = explorerMaxZoomRadius;
+    orbitState.radius = Math.min(Math.max(3, explorerFitRadius), explorerMaxZoomRadius);
     orbitState.theta = Math.PI / 4;
     orbitState.phi = Math.PI / 2;
     updateCameraFromOrbit();
@@ -2778,10 +3014,13 @@ function exitExplorerMode() {
   explorerGroup.visible = false;
   expUi.style.display = "none";
   expLabel.style.display = "none";
-  
+
   const infoPanel = document.getElementById("info-panel");
   if (infoPanel) infoPanel.style.display = "block";
-  
+
+  const orbitalTogglesPanel = document.getElementById("orbital-toggles-panel");
+  if (orbitalTogglesPanel) orbitalTogglesPanel.style.display = "";
+
   if (quantumModeBtn) {
     quantumModeBtn.style.borderColor = "";
     quantumModeDot.style.background = "#607cff";
@@ -2800,8 +3039,11 @@ function exitExplorerMode() {
   if (orbitState) {
     // Restore normal zoom cap and clamp the current radius into it.
     // If you were max-zoomed out in quantum, normal mode lands at its own max.
-    maxZoomRadius = NORMAL_MAX_ZOOM_RADIUS;
-    orbitState.radius = Math.max(3, Math.min(maxZoomRadius, lastNormalRadius || orbitState.radius));
+    maxZoomRadius = normalMaxZoomRadius;
+    orbitState.radius = Math.max(
+      3,
+      Math.min(maxZoomRadius, lastNormalRadius || orbitState.radius)
+    );
     orbitState.theta = Math.PI / 4;
     orbitState.phi = Math.PI / 2;
     updateCameraFromOrbit();
@@ -2817,11 +3059,11 @@ function exitExplorerMode() {
   rotateInertia.identity();
 
   // Clear quantum point cloud from the scene
-  while(explorerGroup.children.length > 0){ 
-      const child = explorerGroup.children[0];
-      if(child.geometry) child.geometry.dispose();
-      if(child.material) child.material.dispose();
-      explorerGroup.remove(child); 
+  while (explorerGroup.children.length > 0) {
+    const child = explorerGroup.children[0];
+    if (child.geometry) child.geometry.dispose();
+    if (child.material) child.material.dispose();
+    explorerGroup.remove(child);
   }
 }
 
@@ -2830,7 +3072,7 @@ if (expN && expL && expM) {
     const n = parseInt(expN.value);
     expL.max = n - 1;
     if (parseInt(expL.value) > n - 1) expL.value = n - 1;
-    
+
     const l = parseInt(expL.value);
     expM.min = -l;
     expM.max = l;
@@ -2852,7 +3094,7 @@ if (expN && expL && expM) {
   expPts.addEventListener("input", updateExplorerBounds);
   expSize.addEventListener("input", updateExplorerBounds);
   expColor.addEventListener("input", debounceOrbitalRender);
-  
+
   expCloseBtn.addEventListener("click", exitExplorerMode);
 }
 
@@ -2868,6 +3110,7 @@ if (quantumModeBtn && quantumModeDot) {
 window.addEventListener("load", () => {
   try {
     setStatus("Initializing renderer…");
+    populateOrbitalFilterUI();
     const ok = initScene();
     if (!ok) {
       return;
@@ -2884,3 +3127,25 @@ window.addEventListener("load", () => {
   }
 });
 
+document.getElementById('reset-cam-btn')?.addEventListener('click', () => {
+  if (!orbitState) return;
+  
+  if (typeof isExplorerMode !== 'undefined' && isExplorerMode) {
+    orbitState.radius = Math.min(Math.max(3, explorerFitRadius), explorerMaxZoomRadius);
+  } else {
+    orbitState.radius = 14;
+  }
+  
+  orbitState.theta = Math.PI / 4;
+  orbitState.phi = Math.PI / 2;
+  if (rootGroup) {
+    rootGroup.position.set(0, 0, 0);
+    rootGroup.quaternion.identity();
+  }
+  if (explorerGroup) {
+    explorerGroup.position.set(0, 0, 0);
+    explorerGroup.quaternion.identity();
+  }
+  rotateInertia.identity();
+  updateCameraFromOrbit();
+});

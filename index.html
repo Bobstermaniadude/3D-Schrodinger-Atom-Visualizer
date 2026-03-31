@@ -41,12 +41,6 @@
       position: relative;
     }
 
-    header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
     .title {
       font-weight: 600;
       letter-spacing: 0.04em;
@@ -228,6 +222,50 @@
       letter-spacing: 0.16em;
       color: #9dd2ff;
       background: radial-gradient(circle at top, #182a60, #071129);
+    }
+
+    .orbital-toggle-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .orbital-toggle-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      font-size: 11px;
+      color: #7a86b7;
+      padding: 4px 10px;
+      border: 1px solid rgba(116, 140, 255, 0.3);
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .orbital-toggle-item:has(input:checked) {
+      background: rgba(116, 140, 255, 0.25);
+      border-color: rgba(116, 140, 255, 0.8);
+      color: #e2e8ff;
+      box-shadow: 0 0 10px rgba(116, 140, 255, 0.15);
+    }
+
+    .orbital-toggle-item .toggle-input {
+      display: none;
+    }
+
+    #orbital-toggles-panel {
+      position: absolute;
+      top: 66px;
+      right: 16px;
+      left: auto;
+      bottom: auto;
+      z-index: 26;
+      padding: 10px 12px;
+      min-width: 170px;
     }
 
     #app-container {
@@ -454,6 +492,8 @@
 
     select,
     .toggle-input {
+      -webkit-appearance: none;
+      appearance: none;
       background: #0d1538;
       color: #eaefff;
       border: 1px solid rgba(116, 140, 255, 0.5);
@@ -465,12 +505,14 @@
 
     input[type="range"] {
       -webkit-appearance: none;
+      appearance: none;
       width: 100%;
       background: transparent;
     }
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
+      appearance: none;
       height: 14px;
       width: 14px;
       border-radius: 50%;
@@ -534,6 +576,48 @@
       color: #8ea3ff;
     }
 
+    @keyframes shimmerSweep {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(200%);
+      }
+    }
+
+    #loading-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    #loading-overlay .loading-box {
+      padding: 14px 28px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top left, rgba(13, 21, 56, 0.92), rgba(3, 5, 18, 0.92));
+      border: 1px solid rgba(96, 124, 255, 0.45);
+      backdrop-filter: blur(14px);
+      position: relative;
+      overflow: hidden;
+      color: #aab7ff;
+      font-size: 13px;
+      font-family: system-ui, sans-serif;
+      letter-spacing: 0.04em;
+    }
+
+    #loading-overlay .loading-box::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(100, 140, 255, 0.08) 40%, rgba(100, 140, 255, 0.15) 50%, rgba(100, 140, 255, 0.08) 60%, transparent 100%);
+      animation: shimmerSweep 1.5s ease-in-out infinite;
+    }
+
     @media (max-width: 720px) {
       header {
         flex-direction: column;
@@ -555,7 +639,43 @@
         right: 12px;
         bottom: 12px;
       }
+
+      #orbital-toggles-panel {
+        top: 58px;
+        right: 12px;
+      }
     }
+    .floating-reset-btn {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 25;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, rgba(20, 28, 66, 0.85), rgba(5, 10, 28, 0.85));
+      border: 1px solid rgba(116, 140, 255, 0.4);
+      color: #9bacff;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+      transition: all 0.2s ease;
+    }
+
+    .floating-reset-btn:hover {
+      background: rgba(40, 60, 140, 0.6);
+      border-color: rgba(116, 140, 255, 0.9);
+      color: #fff;
+      transform: translateX(-50%) translateY(-1px);
+    }
+    
+    .floating-reset-btn:active {
+      transform: translateX(-50%) translateY(1px);
+    }
+
   </style>
 </head>
 
@@ -583,7 +703,7 @@
         <div class="field-row">
           <button id="quantum-mode-btn" type="button" title="Toggle volumetric point clouds">
             <span class="dot" id="quantum-mode-dot" style="background: #607cff; box-shadow: 0 0 8px #607cff;"></span>
-            <span>⚛ Quantum</span>
+            <span>⚛ Orbital Explorer</span>
           </button>
         </div>
       </div>
@@ -608,52 +728,79 @@
       style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#aab7ff;text-shadow:0 0 16px rgba(0,0,0,0.9);">
       <span id="status-text">Initializing renderer…</span>
     </div>
+    <div id="loading-overlay">
+      <div class="loading-box">Computing orbitals…</div>
+    </div>
+    <div class="panel" id="orbital-toggles-panel">
+      <div class="field-label" style="margin-bottom:8px;">Orbital Toggles</div>
+      <div class="orbital-toggle-row">
+        <label class="orbital-toggle-item"><input type="checkbox" id="orb-show-s" class="toggle-input" checked />
+          s</label>
+        <label class="orbital-toggle-item"><input type="checkbox" id="orb-show-p" class="toggle-input" checked />
+          p</label>
+        <label class="orbital-toggle-item"><input type="checkbox" id="orb-show-d" class="toggle-input" checked />
+          d</label>
+        <label class="orbital-toggle-item"><input type="checkbox" id="orb-show-f" class="toggle-input" checked />
+          f</label>
+      </div>
+    </div>
     <button id="settings-button" class="settings-gear-btn" type="button" title="Settings" aria-label="Settings">
       <span aria-hidden="true">⚙️</span>
     </button>
-    
+
     <!-- Large, centered, subtle background text for wavefunction -->
-    <div id="explorer-label" style="display:none; position:absolute; inset:0; align-items:center; justify-content:center; pointer-events:none; font-family:serif; font-style:italic; font-size:18vw; color:rgba(255,255,255,0.03); z-index:0; user-select:none;">
+    <div id="explorer-label"
+      style="display:none; position:absolute; inset:0; align-items:center; justify-content:center; pointer-events:none; font-family:serif; font-style:italic; font-size:18vw; color:rgba(255,255,255,0.03); z-index:0; user-select:none;">
       &psi;<sub>1,0,0</sub>
     </div>
 
     <!-- Orbital Explorer Panel -->
-    <div class="panel" id="explorer-ui" style="display:none; top: 16px; left: 16px; bottom: auto; z-index: 20; min-width: 280px;">
-      <div class="panel-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+    <div class="panel" id="explorer-ui"
+      style="display:none; top: 16px; left: 16px; bottom: auto; z-index: 20; min-width: 280px;">
+      <div class="panel-title"
+        style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
         <span>Orbital Explorer</span>
-        <button id="explorer-close-btn" class="tag" style="background:#ff446622; border-color:#ff446655; color:#ff88aa; cursor:pointer;">Exit</button>
+        <button id="explorer-close-btn" class="tag"
+          style="background:#ff446622; border-color:#ff446655; color:#ff88aa; cursor:pointer;">Exit</button>
       </div>
-      
+
       <div class="field-group" style="margin-bottom: 8px;">
-        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Principal (n)</span><span id="exp-val-n">1</span></div>
+        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Principal (n)</span><span
+            id="exp-val-n">1</span></div>
         <input type="range" id="exp-n" min="1" max="7" step="1" value="1" style="width:100%;" />
       </div>
 
       <div class="field-group" style="margin-bottom: 8px;">
-        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Azimuthal (l)</span><span id="exp-val-l">0</span></div>
+        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Azimuthal (l)</span><span
+            id="exp-val-l">0</span></div>
         <input type="range" id="exp-l" min="0" max="0" step="1" value="0" style="width:100%;" />
       </div>
 
       <div class="field-group" style="margin-bottom: 12px;">
-        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Magnetic (m)</span><span id="exp-val-m">0</span></div>
+        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Magnetic (m)</span><span
+            id="exp-val-m">0</span></div>
         <input type="range" id="exp-m" min="0" max="0" step="1" value="0" style="width:100%;" />
       </div>
 
       <div class="divider"></div>
 
       <div class="field-group" style="margin-bottom: 8px; margin-top: 8px;">
-        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Point Count</span><span id="exp-val-pts">100000</span></div>
+        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Point Count</span><span
+            id="exp-val-pts">100000</span></div>
         <input type="range" id="exp-pts" min="10000" max="250000" step="10000" value="100000" style="width:100%;" />
       </div>
 
       <div class="field-group" style="margin-bottom: 8px;">
-        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Point Size</span><span id="exp-val-size">2.0</span></div>
+        <div class="field-label" style="display:flex; justify-content:space-between;"><span>Point Size</span><span
+            id="exp-val-size">2.0</span></div>
         <input type="range" id="exp-size" min="0.1" max="10.0" step="0.1" value="2.0" style="width:100%;" />
       </div>
 
-      <div class="field-group" style="margin-bottom: 4px; display:flex; justify-content:space-between; align-items:center;">
+      <div class="field-group"
+        style="margin-bottom: 4px; display:flex; justify-content:space-between; align-items:center;">
         <div class="field-label" style="margin-bottom:0;">Base Color</div>
-        <input type="color" id="exp-color" value="#bb44ff" style="background:none; border:none; width:28px; height:28px; cursor:pointer;" />
+        <input type="color" id="exp-color" value="#bb44ff"
+          style="background:none; border:none; width:28px; height:28px; cursor:pointer;" />
       </div>
     </div>
     <div class="panel" id="info-panel">
@@ -775,7 +922,8 @@
       <div class="modal-content" style="max-width: 460px;">
         <div class="modal-header">Credits</div>
         <p class="modal-copy">Made with &#10084;&#65039; by Srivarenya Vempati.</p>
-        <p class="modal-copy" style="margin-top: -8px;">Special thanks to Srinidhaya Vempati for debugging support.
+        <p class="modal-copy" style="margin-top: -8px;">Special thanks to Srinidhaya Vempati for debugging support and
+          Daniel Yang for beta testing.
         </p>
         <div class="modal-actions">
           <button id="credits-close-btn" type="button">Close</button>
@@ -852,6 +1000,9 @@
     </div>
 
     <div class="bottom-actions">
+      <button id="screenshot-button" type="button" title="Save screenshot as PNG">
+        <span>📷 Screenshot</span>
+      </button>
       <button id="report-button" class="report-fab" type="button" title="Report issues">
         <span class="dot"></span>
         <span>Report Issues</span>
@@ -860,6 +1011,10 @@
         <span>Credits</span>
       </button>
     </div>
+    <!-- Floating Centered Actions -->
+    <button id="reset-cam-btn" class="floating-reset-btn" type="button" title="Reset tracking camera to origin">
+      ⟲ Reset Camera
+    </button>
   </div>
 
   <!-- Three.js & controls via CDN (pinned to r149 for non-module usage) -->
