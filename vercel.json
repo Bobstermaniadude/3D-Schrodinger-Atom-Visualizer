@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/report-bug.js", "use": "@vercel/node" },
-    { "src": "*.html", "use": "@vercel/static" },
-    { "src": "*.js", "use": "@vercel/static" }
-  ],
+  "functions": {
+    "api/report-bug.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
   "routes": [
     { "src": "/api/report-bug", "dest": "/api/report-bug.js" },
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
