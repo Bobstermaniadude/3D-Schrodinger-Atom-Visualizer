@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "echo \"No build necessary for static site\"",
+    "build": "mkdir -p dist && cp index.html dist/ && cp main.js dist/ && cp test_rot.js dist/",
     "test": "node --test tests/report-bug.test.js"
   },
   "dependencies": {
