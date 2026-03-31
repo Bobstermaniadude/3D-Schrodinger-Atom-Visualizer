@@ -1,13 +1,5 @@
 {
-  "version": 2,
-  "functions": {
-    "api/report-bug.js": {
-      "runtime": "nodejs20.x"
-    }
-  },
-  "routes": [
-    { "src": "/api/report-bug", "dest": "/api/report-bug.js" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "cleanUrls": true
 }
